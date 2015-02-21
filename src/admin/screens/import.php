@@ -53,7 +53,7 @@ $components = WordPoints_Components::instance()->get();
 
 					printf(
 						/* translators: 1 is an importer name, 2 is the reason that it is unavailable. */
-						__( '%1$s — %2$s', 'wordpoints-importer' )
+						esc_html__( '%1$s — %2$s', 'wordpoints-importer' )
 						, '<strong>' . esc_html( $name ) . '</strong>'
 						, esc_html( $error->get_error_message() )
 					);
