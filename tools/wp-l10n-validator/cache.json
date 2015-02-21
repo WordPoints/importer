@@ -1,0 +1,42 @@
+{
+    "\/admin\/admin.php": {
+        "size": 4181,
+        "hash": "5c6d45edc17438463f0b51748f3fc5cf",
+        "errors": false
+    },
+    "\/admin\/screens\/import.php": {
+        "size": 3859,
+        "hash": "911817794b047de372a42c83a96b249e",
+        "errors": false
+    },
+    "\/admin\/screens\/importing.php": {
+        "size": 600,
+        "hash": "6ba68fee77b5627599f92b40184b3c7c",
+        "errors": false
+    },
+    "\/importer.php": {
+        "size": 1890,
+        "hash": "004dec5fcfd58422396b63ff39d55a69",
+        "errors": false
+    },
+    "\/includes\/class-feedback.php": {
+        "size": 2058,
+        "hash": "f1f9b6eea92706832a6d84b768f32c52",
+        "errors": false
+    },
+    "\/includes\/class-importer.php": {
+        "size": 8604,
+        "hash": "665f3c9b5b2f230e68faa175ad10b9a3",
+        "errors": false
+    },
+    "\/includes\/functions.php": {
+        "size": 960,
+        "hash": "97ad79fa0d79ee0e4ae065818458c5c7",
+        "errors": false
+    },
+    "\/includes\/importers\/cubepoints.php": {
+        "size": 7717,
+        "hash": "1766f7ccaf29add286b701e8ee1361f5",
+        "errors": false
+    }
+}
