@@ -17,7 +17,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	/**
 	 * @since 1.0.0
 	 */
-	function __construct( $name ) {
+	public function __construct( $name ) {
 
 		parent::__construct( $name );
 
@@ -45,7 +45,14 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	 */
 	public function is_available() {
 
-		return $this->is_cubepoints_installed();
+		if ( ! $this->is_cubepoints_installed() ) {
+			return new WP_Error(
+				'cubepoints_not_installed'
+				, __( 'CubePoints is not installed', 'wordpoints-importer' )
+			);
+		}
+
+		return true;
 	}
 
 	/**

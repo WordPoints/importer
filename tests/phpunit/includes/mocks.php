@@ -42,7 +42,7 @@ class WordPoints_Importer_Mock extends WordPoints_Importer {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @var bool
+	 * @var true|WP_Error
 	 */
 	public $is_available = true;
 
