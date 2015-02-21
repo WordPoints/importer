@@ -1,4 +1,4 @@
-cubepoints-importer
-===================
+Importer
+========
 
-Import data from CubePoints
+WordPoints module to import data from other plugins.
