@@ -11,7 +11,7 @@ if [[ $TRAVISCI_RUN == phpunit ]]; then
 	unzip /tmp/cubepoints.zip -d /tmp/
 
 	mkdir -p /tmp/wordpress/wp-content/plugins/cubepoints
-	ln -s /tmp/cubepoints /tmp/wordpress/wp-content/plugins/cubepoints
+	ln -s /tmp/cubepoints/ /tmp/wordpress/wp-content/plugins/cubepoints
 	ls /tmp/wordpress/wp-content/plugins/cubepoints
 fi
 
