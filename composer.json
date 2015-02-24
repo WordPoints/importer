@@ -1,9 +1,0 @@
-{
-    "require": {
-        "php": ">=5.2.0"
-    },
-    "require-dev": {
-        "jdgrimes/wp-l10n-validator": "dev-master",
-		"wordpoints/l10n-validator-config": "~1.0"
-    }
-}
