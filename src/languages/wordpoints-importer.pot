@@ -1,0 +1,186 @@
+# Copyright (C) 2015 J.D. Grimes
+# This file is distributed under the same license as the WordPoints Importer package.
+msgid ""
+msgstr ""
+"Project-Id-Version: WordPoints Importer 1.0.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-28 16:41:37+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: admin/admin.php:19
+msgid "WordPoints — Import"
+msgstr ""
+
+#: admin/admin.php:20 admin/screens/import.php:145
+msgid "Import"
+msgstr ""
+
+#: admin/admin.php:28
+msgid "WordPoints — Importing"
+msgstr ""
+
+#: admin/admin.php:29
+msgid "Importing"
+msgstr ""
+
+#: admin/admin.php:99
+msgid "You do not have sufficient permissions to import to WordPoints."
+msgstr ""
+
+#: admin/admin.php:105
+msgid "No importer selected."
+msgstr ""
+
+#: admin/admin.php:111
+msgid "Importer not installed."
+msgstr ""
+
+#: admin/admin.php:143
+msgid "Import to points type:"
+msgstr ""
+
+#: admin/admin.php:165
+msgid "Skipping Points component—no points type specified."
+msgstr ""
+
+#: admin/admin.php:168
+msgid "Skipping Points component—invalid points type selected."
+msgstr ""
+
+#: admin/screens/import.php:14
+msgid "Unavailable"
+msgstr ""
+
+#: admin/screens/import.php:40 admin/screens/importing.php:16
+msgid "WordPoints Importer"
+msgstr ""
+
+#: admin/screens/import.php:47
+msgid "The below importers are not currently available."
+msgstr ""
+
+#. translators: 1 is an importer name, 2 is the reason that it is unavailable.
+#: admin/screens/import.php:56
+msgid "%1$s — %2$s"
+msgstr ""
+
+#: admin/screens/import.php:70
+msgid "Select which items you would like imported."
+msgstr ""
+
+#: admin/screens/import.php:115
+msgid "Disabled (%s)"
+msgstr ""
+
+#: admin/screens/import.php:137
+msgid "This importer does not support any of the installed components."
+msgstr ""
+
+#: admin/screens/importing.php:19
+msgid "Starting import (this could take a few moments)&hellip;"
+msgstr ""
+
+#: includes/class-importer.php:259
+msgid "Importing from %s&hellip;"
+msgstr ""
+
+#: includes/class-importer.php:265
+msgid "Import complete."
+msgstr ""
+
+#: includes/class-importer.php:307
+msgid "Skipping %s component—not installed."
+msgstr ""
+
+#: includes/class-importer.php:312
+msgid "Skipping the %s component—not supported."
+msgstr ""
+
+#: includes/class-importer.php:327
+msgid "Importing data to the %s component&hellip;"
+msgstr ""
+
+#: includes/class-importer.php:351
+msgid "Skipping unrecognized import option &#8220;%s&#8221;&hellip;"
+msgstr ""
+
+#: includes/class-importer.php:363
+msgid "Skipping importing %1$s. Reason: %2$s"
+msgstr ""
+
+#: includes/functions.php:40
+msgid "CubePoints"
+msgstr ""
+
+#: includes/importers/cubepoints.php:27
+msgid "Excluded users"
+msgstr ""
+
+#: includes/importers/cubepoints.php:31
+msgid "User points"
+msgstr ""
+
+#: includes/importers/cubepoints.php:35
+msgid "Points logs"
+msgstr ""
+
+#: includes/importers/cubepoints.php:51
+msgid "CubePoints is not installed"
+msgstr ""
+
+#: includes/importers/cubepoints.php:85
+msgid "Importing excluded users&hellip;"
+msgstr ""
+
+#: includes/importers/cubepoints.php:90
+msgid "No excluded users found."
+msgstr ""
+
+#: includes/importers/cubepoints.php:114
+msgid "Imported %s excluded users."
+msgstr ""
+
+#: includes/importers/cubepoints.php:129
+msgid "Importing users&apos; points&hellip;"
+msgstr ""
+
+#: includes/importers/cubepoints.php:156
+msgid "Imported points for %s users&hellip;"
+msgstr ""
+
+#: includes/importers/cubepoints.php:205
+msgid "CubePoints must be active."
+msgstr ""
+
+#: includes/importers/cubepoints.php:221
+msgid "Importing points logs&hellip;"
+msgstr ""
+
+#: includes/importers/cubepoints.php:251
+msgid "Imported %s points log entries."
+msgstr ""
+
+#: includes/importers/cubepoints.php:338
+msgid "Unable to retrieve the logs from CubePoints&hellip;"
+msgstr ""
+
+#. Description of the module
+msgid "Import your data from CubePoints to WordPoints."
+msgstr ""
+
+#. Author of the module
+msgid "J.D. Grimes"
+msgstr ""
+
+#. Author URI of the module
+msgid "http://codesymphony.co/"
+msgstr ""
+
+#. Module Name of the module
+msgid "Importer"
+msgstr ""
