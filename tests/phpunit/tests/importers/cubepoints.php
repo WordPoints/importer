@@ -75,7 +75,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	}
 
 	/**
-	 * Test that it returns false when CubePoints is not installed.
+	 * Test that it returns a WP_Error when CubePoints is not installed.
 	 *
 	 * @since 1.0.0
 	 *
@@ -85,7 +85,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		delete_option( 'cp_db_version' );
 
-		$this->assertFalse( $this->importer->is_available() );
+		$this->assertWPError( $this->importer->is_available() );
 	}
 
 	/**
