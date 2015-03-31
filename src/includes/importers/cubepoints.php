@@ -42,6 +42,13 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 					'can_import' => array( $this, 'can_import_points_logs' ),
 				),
 			),
+			'ranks' => array(
+				'ranks' => array(
+					'label' => __( 'Rank settings', 'wordpoints-importer' ),
+					'description' => __( 'If checked, the list of ranks is imported, and users will have the correct ranks assigned to them.', 'wordpoints-importer' ),
+					'function' => array( $this, 'import_ranks' ),
+				),
+			),
 		);
 	}
 
@@ -457,6 +464,63 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 		}
 
 		return $logs;
+	}
+
+	/**
+	 * Import ranks.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $settings The import settings for the ranks component.
+	 */
+	public function import_ranks( $settings ) {
+
+		$this->feedback->info( __( 'Importing ranks&hellip;', 'wordpoints-importer' ) );
+
+		$ranks_data = get_option( 'cp_module_ranks_data' );
+
+		if ( empty( $ranks_data ) || ! is_array( $ranks_data ) ) {
+			$this->feedback->error( __( 'No ranks found.', 'wordpoints-importer' ) );
+			return;
+		}
+
+		$i = 0;
+
+		// The base rank already exists, so we just update it.
+		if ( isset( $ranks_data[0] ) ) {
+
+			wordpoints_update_rank(
+				WordPoints_Rank_Groups::get_group( $settings['rank_group'] )->get_rank( 0 )
+				, $ranks_data[0]
+				, 'base'
+				, $settings['rank_group']
+				, 0
+			);
+
+			$i++;
+
+			unset( $ranks_data[0] );
+		}
+
+		$points_type = substr( $settings['rank_group'], strlen( 'points_type-' ) );
+		$rank_type = 'points-' . $points_type;
+
+		ksort( $ranks_data );
+
+		foreach ( $ranks_data as $points => $rank_name ) {
+
+			wordpoints_add_rank(
+				$rank_name
+				, $rank_type
+				, $settings['rank_group']
+				, $i
+				, array( 'points' => $points, 'points_type' => $points_type )
+			);
+
+			$i++;
+		}
+
+		$this->feedback->success( sprintf( __( 'Imported %s ranks.', 'wordpoints-importer' ), $i ) );
 	}
 }
 

@@ -97,6 +97,98 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		$this->assertFalse( $valid );
 		$this->assertEmpty( $feedback->messages );
 	}
+
+	/**
+	 * Test that a rank group must be supplied.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers ::wordpoints_importer_validate_rank_group_setting
+	 */
+	public function test_validate_rank_group_setting_not_set() {
+
+		wordpoints_register_points_ranks();
+
+		$feedback = new WordPoints_Importer_Tests_Feedback;
+
+		$valid = wordpoints_importer_validate_rank_group_setting(
+			true
+			, array()
+			, $feedback
+		);
+
+		$this->assertFalse( $valid );
+		$this->assertCount( 1, $feedback->messages['warning'] );
+	}
+
+	/**
+	 * Test that the rank group supplied must be valid.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers ::wordpoints_importer_validate_rank_group_setting
+	 */
+	public function test_validate_rank_group_setting_invalid() {
+
+		wordpoints_register_points_ranks();
+
+		$feedback = new WordPoints_Importer_Tests_Feedback;
+
+		$valid = wordpoints_importer_validate_rank_group_setting(
+			true
+			, array( 'rank_group' => 'invalid' )
+			, $feedback
+		);
+
+		$this->assertFalse( $valid );
+		$this->assertCount( 1, $feedback->messages['warning'] );
+	}
+
+	/**
+	 * Test that it returns true when supplied a valid rank group.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers ::wordpoints_importer_validate_rank_group_setting
+	 */
+	public function test_validate_rank_group_setting_valid() {
+
+		wordpoints_register_points_ranks();
+
+		$feedback = new WordPoints_Importer_Tests_Feedback;
+
+		$valid = wordpoints_importer_validate_rank_group_setting(
+			true
+			, array( 'rank_group' => 'points_type-points' )
+			, $feedback
+		);
+
+		$this->assertTrue( $valid );
+		$this->assertEmpty( $feedback->messages );
+	}
+
+	/**
+	 * Test that it returns false when supplied a valid rank group if $valid is false.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers ::wordpoints_importer_validate_rank_group_setting
+	 */
+	public function test_validate_rank_group_setting_valid_false() {
+
+		wordpoints_register_points_ranks();
+
+		$feedback = new WordPoints_Importer_Tests_Feedback;
+
+		$valid = wordpoints_importer_validate_rank_group_setting(
+			false
+			, array( 'rank_group' => 'points_type-points' )
+			, $feedback
+		);
+
+		$this->assertFalse( $valid );
+		$this->assertEmpty( $feedback->messages );
+	}
 }
 
 // EOF
