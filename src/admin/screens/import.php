@@ -116,13 +116,13 @@ $components = WordPoints_Components::instance()->get();
 						<?php endif; ?>
 					</label>
 
-					<?php if ( isset( $options['description'] ) ) : ?>
-						<p class="description">
+					<?php if ( isset( $option['description'] ) ) : ?>
+						<p class="description" style="margin-bottom: 10px; margin-left: 25px;">
 							<?php echo esc_html( $option['description'] ); ?>
 						</p>
+					<?php else : ?>
+						<br style="margin-bottom: 10px" />
 					<?php endif; ?>
-
-					<br />
 
 				<?php endforeach; ?>
 

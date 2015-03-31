@@ -27,6 +27,11 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 					'label' => __( 'Excluded users', 'wordpoints-importer' ),
 					'function' => array( $this, 'import_excluded_users' ),
 				),
+				'settings'    => array(
+					'label' => __( 'Points Hooks', 'wordpoints-importer' ),
+					'description' => __( 'If checked, the settings for the number of points to award for posts, comments, etc. are imported.', 'wordpoints-importer' ),
+					'function' => array( $this, 'import_points_settings' ),
+				),
 				'user_points' => array(
 					'label' => __( 'User points', 'wordpoints-importer' ),
 					'function' => array( $this, 'import_user_points' ),
@@ -115,6 +120,118 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 				, count( $user_ids )
 			)
 		);
+	}
+
+	/**
+	 * Import the points settings to the points hooks.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $settings The settings for the points component import.
+	 */
+	protected function import_points_settings( $settings ) {
+
+		$this->feedback->info( __( 'Importing points hooks&hellip;', 'wordpoints-importer' ) );
+
+		$options = array(
+			'cp_comment_points'     => 'comment',
+			'cp_post_points'        => 'post',
+			'cp_reg_points'         => 'registration',
+			'cp_post_author_points' => 'comment_received',
+		);
+
+		// Don't import this module setting if the module isn't active.
+		if ( function_exists( 'cp_module_activated' ) && ! cp_module_activated( 'post_author_points' ) ) {
+			unset( $options['cp_post_author_points'] );
+		}
+
+		$imported = 0;
+
+		foreach ( $options as $option => $type ) {
+
+			$points = get_option( $option );
+
+			if ( wordpoints_posint( $points ) ) {
+
+				$added = $this->add_points_hook(
+					"wordpoints_{$type}_points_hook"
+					, $settings['points_type']
+					, array( 'points' => $points )
+				);
+
+				if ( $added ) {
+					$imported++;
+				}
+			}
+		}
+
+		if ( $this->import_daily_points_hook( $settings ) ) {
+			$imported++;
+		}
+
+		$this->feedback->success(
+			sprintf( __( 'Imported %s points hooks.', 'wordpoints-importer' ), $imported )
+		);
+	}
+
+	/**
+	 * Import the settings for the Daily Points module to a points hook.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param array $settings The settings for the points component import.
+	 *
+	 * @return bool True if the settings were imported, false otherwise.
+	 */
+	protected function import_daily_points_hook( $settings ) {
+
+		// Don't import this module setting if the module isn't active.
+		if ( function_exists( 'cp_module_activated' ) && ! cp_module_activated( 'dailypoints' ) ) {
+			return false;
+		}
+
+		$points = get_option( 'cp_module_dailypoints_points' );
+		$period = get_option( 'cp_module_dailypoints_time' );
+
+		if ( ! wordpoints_int( $points ) || ! wordpoints_posint( $period ) ) {
+			return false;
+		}
+
+		return $this->add_points_hook(
+			'wordpoints_periodic_points_hook'
+			, $settings['points_type']
+			, array( 'points' => $points, 'period' => $period )
+		);
+	}
+
+	/**
+	 * Programmatically create a new instance of a points hook.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param string $hook_type   The type of hook to create.
+	 * @param string $points_type The slug of the points type the hook is for.
+	 * @param array  $instance    The arguments for the instance.
+	 *
+	 * @return bool True if added successfully, or false on failure.
+	 */
+	private function add_points_hook( $hook_type, $points_type, $instance = array() ) {
+
+		$hook = WordPoints_Points_Hooks::get_handler_by_id_base( $hook_type );
+
+		if ( ! $hook instanceof WordPoints_Points_Hook ) {
+			return false;
+		}
+
+		$number = $hook->next_hook_id_number();
+
+		$points_types_hooks = WordPoints_Points_Hooks::get_points_types_hooks();
+		$points_types_hooks[ $points_type ] = $hook->get_id( $number );
+		WordPoints_Points_Hooks::save_points_types_hooks( $points_types_hooks );
+
+		$hook->update_callback( $instance, $number );
+
+		return true;
 	}
 
 	/**

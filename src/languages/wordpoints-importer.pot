@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: WordPoints Importer 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-28 16:41:37+00:00\n"
+"POT-Creation-Date: 2015-03-31 15:51:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -122,50 +122,68 @@ msgid "Excluded users"
 msgstr ""
 
 #: includes/importers/cubepoints.php:31
+msgid "Points Hooks"
+msgstr ""
+
+#: includes/importers/cubepoints.php:32
+msgid ""
+"If checked, the settings for the number of points to award for posts, "
+"comments, etc. are imported."
+msgstr ""
+
+#: includes/importers/cubepoints.php:36
 msgid "User points"
 msgstr ""
 
-#: includes/importers/cubepoints.php:35
+#: includes/importers/cubepoints.php:40
 msgid "Points logs"
 msgstr ""
 
-#: includes/importers/cubepoints.php:51
+#: includes/importers/cubepoints.php:56
 msgid "CubePoints is not installed"
 msgstr ""
 
-#: includes/importers/cubepoints.php:85
+#: includes/importers/cubepoints.php:90
 msgid "Importing excluded users&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:90
+#: includes/importers/cubepoints.php:95
 msgid "No excluded users found."
 msgstr ""
 
-#: includes/importers/cubepoints.php:114
+#: includes/importers/cubepoints.php:119
 msgid "Imported %s excluded users."
 msgstr ""
 
-#: includes/importers/cubepoints.php:129
+#: includes/importers/cubepoints.php:134
+msgid "Importing points hooks&hellip;"
+msgstr ""
+
+#: includes/importers/cubepoints.php:173
+msgid "Imported %s points hooks."
+msgstr ""
+
+#: includes/importers/cubepoints.php:246
 msgid "Importing users&apos; points&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:156
+#: includes/importers/cubepoints.php:273
 msgid "Imported points for %s users&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:205
+#: includes/importers/cubepoints.php:322
 msgid "CubePoints must be active."
 msgstr ""
 
-#: includes/importers/cubepoints.php:221
+#: includes/importers/cubepoints.php:338
 msgid "Importing points logs&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:251
+#: includes/importers/cubepoints.php:368
 msgid "Imported %s points log entries."
 msgstr ""
 
-#: includes/importers/cubepoints.php:338
+#: includes/importers/cubepoints.php:455
 msgid "Unable to retrieve the logs from CubePoints&hellip;"
 msgstr ""
 
