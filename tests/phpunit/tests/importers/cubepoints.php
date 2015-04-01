@@ -37,6 +37,17 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	}
 
 	/**
+	 * @since 1.1.0
+	 */
+	public function tearDown() {
+
+		WordPoints_Rank_Groups::deregister_group( 'points_type-points' );
+		WordPoints_Rank_Types::deregister_type( 'points-points' );
+
+		parent::tearDown();
+	}
+
+	/**
 	 * Test that it returns true when CubePoints is installed.
 	 *
 	 * @since 1.0.0
@@ -121,25 +132,12 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		update_option( 'cp_topfilter', $user_logins );
 
-		$feedback = new WordPoints_Importer_Tests_Feedback();
-
-		$this->importer->do_import(
-			array(
-				'points' => array(
-					'excluded_users' => '1',
-					'_data' => array( 'points_type' => 'points' ),
-				),
-			)
-			, $feedback
-		);
+		$this->do_points_import( 'excluded_users' );
 
 		$this->assertEquals(
 			$user_ids
 			, wordpoints_get_excluded_users( 'tests' )
 		);
-
-		$this->assertCount( 4, $feedback->messages['info'] );
-		$this->assertCount( 1, $feedback->messages['success'] );
 	}
 
 	/**
@@ -169,6 +167,68 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	}
 
 	/**
+	 * Test importing the points settings to points hooks.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_points_settings
+	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
+	 */
+	public function test_import_points_settings() {
+
+		update_option( 'cp_comment_points',     10 );
+		update_option( 'cp_post_points',        20 );
+		update_option( 'cp_reg_points',         50 );
+
+		$this->do_points_import( 'settings' );
+
+		$this->assertHookImported( 'comment', 10 );
+		$this->assertHookImported( 'post', 20 );
+		$this->assertHookImported( 'registration', 50 );
+	}
+
+	/**
+	 * Test importing the settings from the post author points module to points hooks.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_points_settings
+	 */
+	public function test_import_post_author_points() {
+
+		cp_module_activation_set( 'post_author_points', 'active' );
+
+		update_option( 'cp_post_author_points', 15 );
+
+		$this->do_points_import( 'settings' );
+
+		$this->assertHookImported( 'comment_received', 15 );
+	}
+
+	/**
+	 * Test importing the settings from the post author points module to points hooks.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_points_settings
+	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
+	 */
+	public function test_import_periodic_points() {
+
+		cp_module_activation_set( 'dailypoints', 'active' );
+
+		update_option( 'cp_module_dailypoints_points', 30 );
+		update_option( 'cp_module_dailypoints_time', DAY_IN_SECONDS );
+
+		$this->do_points_import( 'settings' );
+
+		$this->assertHookImported(
+			'periodic'
+			, array( 'points' => 30, 'period' => DAY_IN_SECONDS )
+		);
+	}
+
+	/**
 	 * Test importing the user's points.
 	 *
 	 * @since 1.0.0
@@ -177,8 +237,6 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	 * @covers WordPoints_CubePoints_Importer::get_next_user_points_batch
 	 */
 	public function test_import_user_points() {
-
-		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$user_points = array();
 
@@ -189,22 +247,11 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 			$user_points[ $user_id ] = $points;
 		}
 
-		$this->importer->do_import(
-			array(
-				'points' => array(
-					'user_points' => '1',
-					'_data' => array( 'points_type' => 'points' ),
-				),
-			)
-			, $feedback
-		);
+		$this->do_points_import( 'user_points' );
 
 		foreach ( $user_points as $user_id => $points ) {
 			$this->assertEquals( $points, wordpoints_get_points( $user_id, 'points' ) );
 		}
-
-		$this->assertCount( 4, $feedback->messages['info'] );
-		$this->assertCount( 1, $feedback->messages['success'] );
 	}
 
 	/**
@@ -221,8 +268,6 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		remove_action( 'publish_post', 'cp_newPost' );
 
-		$feedback = new WordPoints_Importer_Tests_Feedback();
-
 		$user_id = $this->factory->user->create();
 		cp_points( 'misc', $user_id, 10, 'Testing things.' );
 
@@ -230,18 +275,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$post_id = $this->factory->post->create();
 		cp_points( 'post', $user_id_2, 25, $post_id );
 
-		$this->importer->do_import(
-			array(
-				'points' => array(
-					'logs' => '1',
-					'_data' => array( 'points_type' => 'points' ),
-				),
-			)
-			, $feedback
-		);
-
-		$this->assertCount( 4, $feedback->messages['info'] );
-		$this->assertCount( 1, $feedback->messages['success'] );
+		$this->do_points_import( 'logs' );
 
 		$query = new WordPoints_Points_Logs_Query( array( 'orderby' => 'id' ) );
 		$logs = $query->get();
@@ -267,6 +301,133 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$this->assertEquals( 'points', $log->points_type );
 		$this->assertEquals( 'post', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
 		$this->assertEquals( $post_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+	}
+
+	/**
+	 * Test that ranks are imported.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_ranks
+	 */
+	public function test_ranks_import() {
+
+		update_option(
+			'cp_module_ranks_data'
+			, array( 0 => 'Newbie', 1000 => 'Biggie', 5000 => 'Oldie' )
+		);
+
+		wordpoints_register_points_ranks();
+
+		$feedback = new WordPoints_Importer_Tests_Feedback();
+
+		$this->importer->do_import(
+			array(
+				'ranks' => array(
+					'ranks' => '1',
+					'_data' => array( 'rank_group' => 'points_type-points' ),
+				),
+			)
+			, $feedback
+		);
+
+		$this->assertCount( 4, $feedback->messages['info'] );
+		$this->assertCount( 1, $feedback->messages['success'] );
+
+		$group = WordPoints_Rank_Groups::get_group( 'points_type-points' );
+
+		$base_rank = wordpoints_get_rank( $group->get_rank( 0 ) );
+		$this->assertEquals( 'base', $base_rank->type );
+		$this->assertEquals( 'Newbie', $base_rank->name );
+
+		$second_rank = wordpoints_get_rank( $group->get_rank( 1 ) );
+		$this->assertEquals( 1000, $second_rank->points );
+		$this->assertEquals( 'Biggie', $second_rank->name );
+
+		$third_rank = wordpoints_get_rank( $group->get_rank( 2 ) );
+		$this->assertEquals( 5000, $third_rank->points );
+		$this->assertEquals( 'Oldie', $third_rank->name );
+	}
+
+	/**
+	 * Test that there is an error if there are no ranks import.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_ranks
+	 */
+	public function test_error_if_no_ranks_to_import() {
+
+		wordpoints_register_points_ranks();
+
+		$feedback = new WordPoints_Importer_Tests_Feedback();
+
+		$this->importer->do_import(
+			array(
+				'ranks' => array(
+					'ranks' => '1',
+					'_data' => array( 'rank_group' => 'points_type-points' ),
+				),
+			)
+			, $feedback
+		);
+
+		$this->assertCount( 4, $feedback->messages['info'] );
+		$this->assertCount( 1, $feedback->messages['error'] );
+
+	}
+
+	//
+	// Helpers.
+	//
+
+	/**
+	 * Do the import for the points settings.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string $type The type of points import.
+	 */
+	protected function do_points_import( $type ) {
+
+		$feedback = new WordPoints_Importer_Tests_Feedback();
+
+		$this->importer->do_import(
+			array(
+				'points' => array(
+					$type => '1',
+					'_data' => array( 'points_type' => 'points' ),
+				),
+			)
+			, $feedback
+		);
+
+		$this->assertCount( 4, $feedback->messages['info'] );
+		$this->assertCount( 1, $feedback->messages['success'] );
+	}
+
+	/**
+	 * Assert that a hook was imported.
+	 *
+	 * Actually just checks that the hook exists.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @param string    $type     The type of hook.
+	 * @param int|array $instance The instance settings, or just the points value.
+	 */
+	protected function assertHookImported( $type, $instance ) {
+
+		$hook = WordPoints_Points_Hooks::get_handler_by_id_base(
+			"wordpoints_{$type}_points_hook"
+		);
+
+		if ( is_int( $instance ) ) {
+			$this->assertEquals( $instance, $hook->get_points() );
+		} else {
+			$instances = $hook->get_instances();
+			$this->assertEquals( $instance, end( $instances ) );
+		}
 	}
 }
 

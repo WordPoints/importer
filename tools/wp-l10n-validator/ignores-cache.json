@@ -31,5 +31,46 @@
                 "parentheses": 1
             }
         }
+    },
+    "\/includes\/importers\/cubepoints.php": {
+        "comment": {
+            "144": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            }
+        },
+        "post": {
+            "145": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 1,
+                "parentheses": 1
+            }
+        },
+        "registration": {
+            "146": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 2,
+                "parentheses": 1
+            }
+        },
+        "base": {
+            "495": {
+                "name": "wordpoints_update_rank",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 2,
+                "parentheses": 1
+            }
+        },
+        "points-": {
+            "506": false
+        }
     }
 }

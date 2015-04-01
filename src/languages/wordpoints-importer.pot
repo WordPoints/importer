@@ -2,9 +2,9 @@
 # This file is distributed under the same license as the WordPoints Importer package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WordPoints Importer 1.0.0\n"
+"Project-Id-Version: WordPoints Importer 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-28 16:41:37+00:00\n"
+"POT-Creation-Date: 2015-04-01 14:01:15+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -50,6 +50,18 @@ msgstr ""
 
 #: admin/admin.php:168
 msgid "Skipping Points component—invalid points type selected."
+msgstr ""
+
+#: admin/admin.php:206
+msgid "Import to rank group:"
+msgstr ""
+
+#: admin/admin.php:228
+msgid "Skipping Ranks component—no rank group specified."
+msgstr ""
+
+#: admin/admin.php:231
+msgid "Skipping Ranks component—invalid rank group selected."
 msgstr ""
 
 #: admin/screens/import.php:14
@@ -122,51 +134,91 @@ msgid "Excluded users"
 msgstr ""
 
 #: includes/importers/cubepoints.php:31
+msgid "Points Hooks"
+msgstr ""
+
+#: includes/importers/cubepoints.php:32
+msgid ""
+"If checked, the settings for the number of points to award for posts, "
+"comments, etc. are imported."
+msgstr ""
+
+#: includes/importers/cubepoints.php:36
 msgid "User points"
 msgstr ""
 
-#: includes/importers/cubepoints.php:35
+#: includes/importers/cubepoints.php:40
 msgid "Points logs"
 msgstr ""
 
-#: includes/importers/cubepoints.php:51
+#: includes/importers/cubepoints.php:47
+msgid "Rank settings"
+msgstr ""
+
+#: includes/importers/cubepoints.php:48
+msgid ""
+"If checked, the list of ranks is imported, and users will have the correct "
+"ranks assigned to them."
+msgstr ""
+
+#: includes/importers/cubepoints.php:63
 msgid "CubePoints is not installed"
 msgstr ""
 
-#: includes/importers/cubepoints.php:85
+#: includes/importers/cubepoints.php:97
 msgid "Importing excluded users&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:90
+#: includes/importers/cubepoints.php:102
 msgid "No excluded users found."
 msgstr ""
 
-#: includes/importers/cubepoints.php:114
+#: includes/importers/cubepoints.php:126
 msgid "Imported %s excluded users."
 msgstr ""
 
-#: includes/importers/cubepoints.php:129
+#: includes/importers/cubepoints.php:141
+msgid "Importing points hooks&hellip;"
+msgstr ""
+
+#: includes/importers/cubepoints.php:180
+msgid "Imported %s points hooks."
+msgstr ""
+
+#: includes/importers/cubepoints.php:253
 msgid "Importing users&apos; points&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:156
+#: includes/importers/cubepoints.php:280
 msgid "Imported points for %s users&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:205
+#: includes/importers/cubepoints.php:329
 msgid "CubePoints must be active."
 msgstr ""
 
-#: includes/importers/cubepoints.php:221
+#: includes/importers/cubepoints.php:345
 msgid "Importing points logs&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:251
+#: includes/importers/cubepoints.php:375
 msgid "Imported %s points log entries."
 msgstr ""
 
-#: includes/importers/cubepoints.php:338
+#: includes/importers/cubepoints.php:462
 msgid "Unable to retrieve the logs from CubePoints&hellip;"
+msgstr ""
+
+#: includes/importers/cubepoints.php:478
+msgid "Importing ranks&hellip;"
+msgstr ""
+
+#: includes/importers/cubepoints.php:483
+msgid "No ranks found."
+msgstr ""
+
+#: includes/importers/cubepoints.php:523
+msgid "Imported %s ranks."
 msgstr ""
 
 #. Description of the module

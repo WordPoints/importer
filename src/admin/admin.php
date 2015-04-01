@@ -179,4 +179,67 @@ add_action(
 	, 3
 );
 
+/**
+ * Display a rank group dropdown above the ranks component settings.
+ *
+ * @since 1.1.0
+ */
+function wordpoints_importer_admin_screen_rank_group_select() {
+
+	$rank_groups = WordPoints_Rank_Groups::get();
+
+	// See https://github.com/WordPoints/wordpoints/issues/310.
+	$options = array();
+	foreach ( $rank_groups as $rank_group ) {
+		$options[ $rank_group->slug ] = $rank_group->name;
+	}
+
+	$dropdown = new WordPoints_Dropdown_Builder(
+		$options
+		, array( 'name' => 'wordpoints_import[ranks][_data][rank_group]' )
+	);
+
+	?>
+
+	<p>
+		<label for="wordpoints_import[ranks][_data][rank_group]">
+			<?php esc_html_e( 'Import to rank group:', 'wordpoints-importer' ); ?>
+			<?php $dropdown->display(); ?>
+		</label>
+	</p>
+
+<?php
+}
+add_action(
+	'wordpoints_importer_before_component_options-ranks'
+	, 'wordpoints_importer_admin_screen_rank_group_select'
+);
+
+/**
+ * Validate the rank group import setting for the ranks component.
+ *
+ * @since 1.1.0
+ */
+function wordpoints_importer_validate_rank_group_setting( $valid, $settings, $feedback ) {
+
+	if ( $valid ) {
+
+		if ( ! isset( $settings['rank_group'] ) ) {
+			$feedback->warning( __( 'Skipping Ranks component—no rank group specified.', 'wordpoints-importer' ) );
+			$valid = false;
+		} elseif ( ! WordPoints_Rank_Groups::is_group_registered( $settings['rank_group'] ) ) {
+			$feedback->warning( __( 'Skipping Ranks component—invalid rank group selected.', 'wordpoints-importer' ) );
+			$valid = false;
+		}
+	}
+
+	return $valid;
+}
+add_action(
+	'wordpoints_import_settings_valid-ranks'
+	, 'wordpoints_importer_validate_rank_group_setting'
+	, 10
+	, 3
+);
+
 // EOF
