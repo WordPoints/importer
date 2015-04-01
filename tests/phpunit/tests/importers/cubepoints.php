@@ -37,6 +37,17 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	}
 
 	/**
+	 * @since 1.1.0
+	 */
+	public function tearDown() {
+
+		WordPoints_Rank_Groups::deregister_group( 'points_type-points' );
+		WordPoints_Rank_Types::deregister_type( 'points-points' );
+
+		parent::tearDown();
+	}
+
+	/**
 	 * Test that it returns true when CubePoints is installed.
 	 *
 	 * @since 1.0.0
@@ -290,6 +301,80 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$this->assertEquals( 'points', $log->points_type );
 		$this->assertEquals( 'post', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
 		$this->assertEquals( $post_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+	}
+
+	/**
+	 * Test that ranks are imported.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_ranks
+	 */
+	public function test_ranks_import() {
+
+		update_option(
+			'cp_module_ranks_data'
+			, array( 0 => 'Newbie', 1000 => 'Biggie', 5000 => 'Oldie' )
+		);
+
+		wordpoints_register_points_ranks();
+
+		$feedback = new WordPoints_Importer_Tests_Feedback();
+
+		$this->importer->do_import(
+			array(
+				'ranks' => array(
+					'ranks' => '1',
+					'_data' => array( 'rank_group' => 'points_type-points' ),
+				),
+			)
+			, $feedback
+		);
+
+		$this->assertCount( 4, $feedback->messages['info'] );
+		$this->assertCount( 1, $feedback->messages['success'] );
+
+		$group = WordPoints_Rank_Groups::get_group( 'points_type-points' );
+
+		$base_rank = wordpoints_get_rank( $group->get_rank( 0 ) );
+		$this->assertEquals( 'base', $base_rank->type );
+		$this->assertEquals( 'Newbie', $base_rank->name );
+
+		$second_rank = wordpoints_get_rank( $group->get_rank( 1 ) );
+		$this->assertEquals( 1000, $second_rank->points );
+		$this->assertEquals( 'Biggie', $second_rank->name );
+
+		$third_rank = wordpoints_get_rank( $group->get_rank( 2 ) );
+		$this->assertEquals( 5000, $third_rank->points );
+		$this->assertEquals( 'Oldie', $third_rank->name );
+	}
+
+	/**
+	 * Test that there is an error if there are no ranks import.
+	 *
+	 * @since 1.1.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_ranks
+	 */
+	public function test_error_if_no_ranks_to_import() {
+
+		wordpoints_register_points_ranks();
+
+		$feedback = new WordPoints_Importer_Tests_Feedback();
+
+		$this->importer->do_import(
+			array(
+				'ranks' => array(
+					'ranks' => '1',
+					'_data' => array( 'rank_group' => 'points_type-points' ),
+				),
+			)
+			, $feedback
+		);
+
+		$this->assertCount( 4, $feedback->messages['info'] );
+		$this->assertCount( 1, $feedback->messages['error'] );
+
 	}
 
 	//
