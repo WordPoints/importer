@@ -11,7 +11,11 @@ install-cubepoints() {
 	unzip /tmp/cubepoints.zip -d /tmp/wordpress/wp-content/plugins/
 }
 
-alias setup-phpunit="\setup-phpunit; install-cubepoints"
+# Sets up custom configuration.
+function wordpoints-dev-lib-config() {
+
+	alias setup-phpunit="\setup-phpunit; install-cubepoints"
+}
 
 set +e
 
