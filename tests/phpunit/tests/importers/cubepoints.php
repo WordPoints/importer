@@ -296,7 +296,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		$this->assertEquals( $user_id_2, $log->user_id );
 		$this->assertEquals( 25, $log->points );
-		$this->assertStringMatchesFormat( 'Post on "<a href="%s">Post title 1</a>"', $log->text );
+		$this->assertStringMatchesFormat( 'Post on "<a href="%s">Post title %s</a>"', $log->text );
 		$this->assertEquals( 'cubepoints', $log->log_type );
 		$this->assertEquals( 'points', $log->points_type );
 		$this->assertEquals( 'post', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );

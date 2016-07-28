@@ -114,12 +114,18 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 			}
 		}
 
-		$excluded_user_ids = wordpoints_get_array_option( 'wordpoints_excluded_users', 'network' );
+		$excluded_user_ids = wordpoints_get_maybe_network_array_option(
+			'wordpoints_excluded_users'
+		);
+
 		$excluded_user_ids = array_unique(
 			array_merge( $excluded_user_ids, $user_ids )
 		);
 
-		wordpoints_update_network_option( 'wordpoints_excluded_users', $excluded_user_ids );
+		wordpoints_update_maybe_network_option(
+			'wordpoints_excluded_users'
+			, $excluded_user_ids
+		);
 
 		$this->feedback->success(
 			sprintf(
