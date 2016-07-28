@@ -105,7 +105,9 @@ function wordpoints_importer_do_import() {
 		wp_die( esc_html__( 'No importer selected.', 'wordpoints-importer' ) );
 	}
 
-	$importer = WordPoints_Importers::get_importer( $_GET['importer'] );
+	$importer = WordPoints_Importers::get_importer(
+		sanitize_key( $_GET['importer'] )
+	);
 
 	if ( ! ( $importer instanceof WordPoints_Importer ) ) {
 		wp_die( esc_html__( 'Importer not installed.', 'wordpoints-importer' ) );
@@ -116,7 +118,7 @@ function wordpoints_importer_do_import() {
 	$args = array();
 
 	if ( isset( $_GET['wordpoints_import'] ) && is_array( $_GET['wordpoints_import'] ) ) {
-		$args = $_GET['wordpoints_import'];
+		$args = wp_unslash( $_GET['wordpoints_import'] ); // WPCS: sanitization OK.
 	}
 
 	iframe_header();
@@ -156,6 +158,12 @@ add_action(
  * Validate the points type import setting for the points component.
  *
  * @since 1.0.0
+ *
+ * @param bool                         $valid    Whether the settings are valid.
+ * @param array                        $settings The settings.
+ * @param WordPoints_Importer_Feedback $feedback The feedback object.
+ *
+ * @return bool Whether the settings are valid.
  */
 function wordpoints_importer_validate_points_type_setting( $valid, $settings, $feedback ) {
 
@@ -219,6 +227,12 @@ add_action(
  * Validate the rank group import setting for the ranks component.
  *
  * @since 1.1.0
+ *
+ * @param bool                         $valid    Whether the settings are valid.
+ * @param array                        $settings The settings.
+ * @param WordPoints_Importer_Feedback $feedback The feedback object.
+ *
+ * @return bool Whether the settings are valid.
  */
 function wordpoints_importer_validate_rank_group_setting( $valid, $settings, $feedback ) {
 

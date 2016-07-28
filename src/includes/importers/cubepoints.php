@@ -287,7 +287,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	 *
 	 * @param int $start The offset number to begin counting at.
 	 *
-	 * @return object[]
+	 * @return object[]|false The rows, or false.
 	 */
 	protected function get_next_user_points_batch( $start ) {
 
@@ -304,7 +304,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 				"
 				, $start
 			)
-		);
+		); // WPCS: cache OK.
 
 		if ( ! is_array( $rows ) ) {
 			return false;
@@ -440,7 +440,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	 *
 	 * @param int $start The offset number to begin counting the 500 at.
 	 *
-	 * @return object[] The rows from the database.
+	 * @return object[]|false The rows from the database.
 	 */
 	protected function get_next_points_logs_batch( $start ) {
 
@@ -456,7 +456,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 				'
 				, $start
 			)
-		);
+		); // WPCS: cache OK.
 
 		if ( ! is_array( $logs ) ) {
 			$this->feedback->error( __( 'Unable to retrieve the logs from CubePoints&hellip;', 'wordpoints-importer' ) );

@@ -11,6 +11,8 @@ if ( true !== current_user_can( 'manage_options' ) ) {
 	wp_die();
 }
 
+check_admin_referer( 'wordpoints_import' );
+
 ?>
 
 <h2><?php esc_html_e( 'WordPoints Importer', 'wordpoints-importer' ); ?></h2>
