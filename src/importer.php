@@ -9,6 +9,8 @@
  * Description: Import your data from CubePoints to WordPoints.
  * Text Domain: wordpoints-importer
  * Domain Path: /languages
+ * Channel:     wordpoints.org
+ * ID:          430
  *
  * ---------------------------------------------------------------------------------|
  * Copyright 2014  J.D. Grimes  (email : jdg@codesymphony.co)
