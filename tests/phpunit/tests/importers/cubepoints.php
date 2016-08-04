@@ -173,6 +173,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	 *
 	 * @covers WordPoints_CubePoints_Importer::import_points_settings
 	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
+	 * @covers WordPoints_CubePoints_Importer::format_settings_for_post_type
 	 */
 	public function test_import_points_settings() {
 
@@ -182,9 +183,143 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		$this->do_points_import( 'settings' );
 
-		$this->assertHookImported( 'comment', 10 );
-		$this->assertHookImported( 'post', 20 );
-		$this->assertHookImported( 'registration', 50 );
+		$this->assertHookImported(
+			array(
+				'event' => 'comment_leave\post',
+				'target' => array( 'comment\post', 'author', 'user' ),
+				'reactor' => 'points_legacy',
+				'points' => 10,
+				'points_type' => 'points',
+				'log_text' => 'Comment on a Post.',
+				'description' => 'Commenting on a Post.',
+				'legacy_log_type' => 'cubepoints-comment',
+				'legacy_meta_key' => 'comment',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+			)
+		);
+
+		$this->assertHookImported(
+			array(
+				'event' => 'comment_leave\page',
+				'target' => array( 'comment\page', 'author', 'user' ),
+				'reactor' => 'points_legacy',
+				'points' => 10,
+				'points_type' => 'points',
+				'log_text' => 'Comment on a Page.',
+				'description' => 'Commenting on a Page.',
+				'legacy_log_type' => 'cubepoints-comment',
+				'legacy_meta_key' => 'comment',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+			)
+		);
+
+		$this->assertHookImported(
+			array(
+				'event' => 'comment_leave\attachment',
+				'target' => array( 'comment\attachment', 'author', 'user' ),
+				'reactor' => 'points_legacy',
+				'points' => 10,
+				'points_type' => 'points',
+				'log_text' => 'Comment on a Media.',
+				'description' => 'Commenting on a Media.',
+				'legacy_log_type' => 'cubepoints-comment',
+				'legacy_meta_key' => 'comment',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+			)
+		);
+
+		$this->assertHookImported(
+			array(
+				'event' => 'post_publish\post',
+				'target' => array( 'post\post', 'author', 'user' ),
+				'reactor' => 'points_legacy',
+				'points' => 20,
+				'points_type' => 'points',
+				'log_text' => 'Published a Post.',
+				'description' => 'Publishing a Post.',
+				'blocker' => array( 'toggle_off' => true ),
+				'legacy_log_type' => 'cubepoints-post',
+				'legacy_meta_key' => 'post',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+				'points_legacy_repeat_blocker' => array( 'toggle_on' => true ),
+			)
+		);
+
+		$reaction_store = wordpoints_hooks()->get_reaction_store( 'points' );
+
+		$this->assertEmpty(
+			$reaction_store->get_reactions_to_event( 'post_publish\page' )
+		);
+
+		$this->assertEmpty(
+			$reaction_store->get_reactions_to_event( 'post_publish\attachment' )
+		);
+
+		$this->assertEmpty(
+			$reaction_store->get_reactions_to_event( 'media_upload' )
+		);
+
+		$this->assertHookImported(
+			array(
+				'event' => 'user_register',
+				'target' => array( 'user' ),
+				'reactor' => 'points_legacy',
+				'points' => 50,
+				'points_type' => 'points',
+				'log_text' => 'Registration.',
+				'description' => 'Registration.',
+				'legacy_log_type' => 'cubepoints-register',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+			)
+		);
+	}
+
+	/**
+	 * Test that it imports legacy points hooks on install.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @coversNothing
+	 */
+	public function test_imported_post_points_hook_does_not_refire() {
+
+		update_option( 'cp_post_points', 20 );
+
+		$user_id = $this->factory->user->create();
+		$post_id = $this->factory->post->create(
+			array(
+				'post_author' => $user_id,
+				'post_type'   => 'post',
+			)
+		);
+
+		$this->assertEquals( 120, cp_getPoints( $user_id ) );
+
+		$this->factory->post->update_object(
+			$post_id
+			, array( 'post_status' => 'draft' )
+		);
+
+		$this->assertEquals( 120, cp_getPoints( $user_id ) );
+
+		$this->do_points_import( 'settings' );
+		$this->do_points_import( 'user_points' );
+		$this->do_points_import( 'logs' );
+
+		$this->assertEquals(
+			120
+			, wordpoints_get_points( $user_id, 'points' )
+		);
+
+		$this->factory->post->update_object(
+			$post_id
+			, array( 'post_status' => 'publish' )
+		);
+
+		$this->assertEquals(
+			120
+			, wordpoints_get_points( $user_id, 'points' )
+		);
 	}
 
 	/**
@@ -193,6 +328,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	 * @since 1.1.0
 	 *
 	 * @covers WordPoints_CubePoints_Importer::import_points_settings
+	 * @covers WordPoints_CubePoints_Importer::format_settings_for_post_type
 	 */
 	public function test_import_post_author_points() {
 
@@ -202,7 +338,50 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		$this->do_points_import( 'settings' );
 
-		$this->assertHookImported( 'comment_received', 15 );
+		$this->assertHookImported(
+			array(
+				'event' => 'comment_leave\post',
+				'target' => array( 'comment\post', 'post\post', 'post\post', 'author', 'user' ),
+				'reactor' => 'points_legacy',
+				'points' => 15,
+				'points_type' => 'points',
+				'log_text' => 'Received a comment on a Post.',
+				'description' => 'Receiving a comment on a Post.',
+				'legacy_log_type' => 'cubepoints-post_author',
+				'legacy_meta_key' => 'comment',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+			)
+		);
+
+		$this->assertHookImported(
+			array(
+				'event' => 'comment_leave\page',
+				'target' => array( 'comment\page', 'post\page', 'post\page', 'author', 'user' ),
+				'reactor' => 'points_legacy',
+				'points' => 15,
+				'points_type' => 'points',
+				'log_text' => 'Received a comment on a Page.',
+				'description' => 'Receiving a comment on a Page.',
+				'legacy_log_type' => 'cubepoints-post_author',
+				'legacy_meta_key' => 'comment',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+			)
+		);
+
+		$this->assertHookImported(
+			array(
+				'event' => 'comment_leave\attachment',
+				'target' => array( 'comment\attachment', 'post\attachment', 'post\attachment', 'author', 'user' ),
+				'reactor' => 'points_legacy',
+				'points' => 15,
+				'points_type' => 'points',
+				'log_text' => 'Received a comment on a Media.',
+				'description' => 'Receiving a comment on a Media.',
+				'legacy_log_type' => 'cubepoints-post_author',
+				'legacy_meta_key' => 'comment',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+			)
+		);
 	}
 
 	/**
@@ -223,8 +402,24 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$this->do_points_import( 'settings' );
 
 		$this->assertHookImported(
-			'periodic'
-			, array( 'points' => 30, 'period' => DAY_IN_SECONDS )
+			array(
+				'event' => 'user_visit',
+				'target' => array( 'current:user' ),
+				'reactor' => 'points',
+				'points' => 30,
+				'points_type' => 'points',
+				'log_text' => 'Visiting the site.',
+				'description' => 'Visiting the site.',
+				'periods' => array(
+					'toggle_on' => array(
+						array(
+							'length' => DAY_IN_SECONDS,
+							'args' => array( array( 'current:user' ) ),
+						),
+					),
+				),
+				'points_legacy_reversals' => array(),
+			)
 		);
 	}
 
@@ -255,7 +450,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	}
 
 	/**
-	 * Test importing the user's points.
+	 * Test importing the points logs.
 	 *
 	 * @since 1.0.0
 	 *
@@ -287,7 +482,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$this->assertEquals( $user_id, $log->user_id );
 		$this->assertEquals( 10, $log->points );
 		$this->assertEquals( 'Testing things.', $log->text );
-		$this->assertEquals( 'cubepoints', $log->log_type );
+		$this->assertEquals( 'cubepoints-misc', $log->log_type );
 		$this->assertEquals( 'points', $log->points_type );
 		$this->assertEquals( 'misc', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
 		$this->assertEquals( 'Testing things.', wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
@@ -297,10 +492,114 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$this->assertEquals( $user_id_2, $log->user_id );
 		$this->assertEquals( 25, $log->points );
 		$this->assertStringMatchesFormat( 'Post on "<a href="%s">Post title %s</a>"', $log->text );
-		$this->assertEquals( 'cubepoints', $log->log_type );
+		$this->assertEquals( 'cubepoints-post', $log->log_type );
 		$this->assertEquals( 'points', $log->points_type );
 		$this->assertEquals( 'post', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
 		$this->assertEquals( $post_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertEquals( $post_id, wordpoints_get_points_log_meta( $log->id, 'post', true ) );
+	}
+
+	/**
+	 * Test importing points logs that have been reversed.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_points_logs
+	 * @covers WordPoints_CubePoints_Importer::import_points_log
+	 * @covers WordPoints_CubePoints_Importer::get_next_points_logs_batch
+	 * @covers WordPoints_CubePoints_Importer::render_points_log_text
+	 */
+	public function test_import_points_logs_reversals() {
+
+		remove_action( 'publish_post', 'cp_newPost' );
+
+		update_option( 'cp_comment_points', 10 );
+		update_option( 'cp_del_comment_points', 10 );
+
+		$user_id = $this->factory->user->create();
+		$post_id = $this->factory->post->create();
+
+		$comment_id = $this->factory->comment->create(
+			array( 'user_id' => $user_id, 'comment_post_ID' => $post_id, 'comment_approved' => 0 )
+		);
+
+		wp_update_comment(
+			array( 'comment_ID' => $comment_id, 'comment_approved' => 1 )
+		);
+
+		$user_id_2 = $this->factory->user->create();
+		$comment_id_2 = $this->factory->comment->create(
+			array( 'user_id' => $user_id_2, 'comment_post_ID' => $post_id, 'comment_approved' => 0 )
+		);
+
+		wp_update_comment(
+			array( 'comment_ID' => $comment_id_2, 'comment_approved' => 1 )
+		);
+
+		// Now reverse the two transactions.
+		wp_update_comment(
+			array( 'comment_ID' => $comment_id, 'comment_approved' => 0 )
+		);
+
+		wp_update_comment(
+			array( 'comment_ID' => $comment_id_2, 'comment_approved' => 0 )
+		);
+
+		$this->do_points_import( 'logs' );
+
+		$query = new WordPoints_Points_Logs_Query(
+			array( 'orderby' => 'id', 'order' => 'ASC' )
+		);
+
+		$logs = $query->get();
+
+		$this->assertCount( 6, $logs );
+
+		// The first log will be for when the first user was created, so we skip it.
+		$log = $logs[1];
+
+		$this->assertEquals( $user_id, $log->user_id );
+		$this->assertEquals( 10, $log->points );
+		$this->assertEquals( 'cubepoints-comment', $log->log_type );
+		$this->assertEquals( 'points', $log->points_type );
+		$this->assertEquals( 'comment', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertEquals( $comment_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertEquals( $comment_id, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
+		$this->assertEquals( $logs[4]->id, wordpoints_get_points_log_meta( $log->id, 'auto_reversed', true ) );
+
+		// The third log is for when the second user was created, so we skip it, too.
+		$log = $logs[3];
+
+		$this->assertEquals( $user_id_2, $log->user_id );
+		$this->assertEquals( 10, $log->points );
+		$this->assertEquals( 'cubepoints-comment', $log->log_type );
+		$this->assertEquals( 'points', $log->points_type );
+		$this->assertEquals( 'comment', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertEquals( $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertEquals( $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
+		$this->assertEquals( $logs[5]->id, wordpoints_get_points_log_meta( $log->id, 'auto_reversed', true ) );
+
+		$log = $logs[4];
+
+		$this->assertEquals( $user_id, $log->user_id );
+		$this->assertEquals( -10, $log->points );
+		$this->assertEquals( 'cubepoints-comment_remove', $log->log_type );
+		$this->assertEquals( 'points', $log->points_type );
+		$this->assertEquals( 'comment_remove', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertEquals( $comment_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertEquals( $comment_id, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
+		$this->assertEquals( $logs[1]->id, wordpoints_get_points_log_meta( $log->id, 'original_log_id', true ) );
+
+		$log = $logs[5];
+
+		$this->assertEquals( $user_id_2, $log->user_id );
+		$this->assertEquals( -10, $log->points );
+		$this->assertEquals( 'cubepoints-comment_remove', $log->log_type );
+		$this->assertEquals( 'points', $log->points_type );
+		$this->assertEquals( 'comment_remove', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertEquals( $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertEquals( $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
+		$this->assertEquals( $logs[3]->id, wordpoints_get_points_log_meta( $log->id, 'original_log_id', true ) );
 	}
 
 	/**
@@ -412,22 +711,26 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	 * Actually just checks that the hook exists.
 	 *
 	 * @since 1.1.0
+	 * @since 1.2.0 Now just accepts a single parameter, $settings.
 	 *
-	 * @param string    $type     The type of hook.
-	 * @param int|array $instance The instance settings, or just the points value.
+	 * @param array $settings The expected reaction settings.
 	 */
-	protected function assertHookImported( $type, $instance ) {
+	protected function assertHookImported( $settings ) {
 
-		$hook = WordPoints_Points_Hooks::get_handler_by_id_base(
-			"wordpoints_{$type}_points_hook"
-		);
+		$reaction_store = wordpoints_hooks()->get_reaction_store( 'points' );
 
-		if ( is_int( $instance ) ) {
-			$this->assertEquals( $instance, $hook->get_points() );
-		} else {
-			$instances = $hook->get_instances();
-			$this->assertEquals( $instance, end( $instances ) );
+		$reactions = $reaction_store->get_reactions_to_event( $settings['event'] );
+
+		$this->assertNotEmpty( $reactions );
+
+		foreach ( $reactions as $reaction ) {
+			if ( $settings === $reaction->get_all_meta() ) {
+				$this->assertEquals( $settings, $reaction->get_all_meta() );
+				return;
+			}
 		}
+
+		$this->assertEquals( $settings, $reaction->get_all_meta() );
 	}
 }
 

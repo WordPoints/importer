@@ -21,4 +21,11 @@ require_once( WORDPOINTS_IMPORTER_TESTS_DIR . '/includes/feedback.php' );
  */
 require_once( WORDPOINTS_IMPORTER_TESTS_DIR . '/includes/mocks.php' );
 
+/**
+ * Testcase for testing hooks.
+ *
+ * @since 1.2.0
+ */
+require_once( WORDPOINTS_IMPORTER_TESTS_DIR . '/includes/testcases/hook.php' );
+
 // EOF
