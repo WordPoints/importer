@@ -610,9 +610,6 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$query = new WordPoints_Points_Logs_Query( array( 'orderby' => 'id' ) );
 		$logs = $query->get();
 
-		// Discard the first log, since it is just from the daily points module.
-		array_pop( $logs );
-
 		$this->assertCount( 4, $logs );
 
 		$log = $logs[2];
@@ -692,9 +689,6 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		);
 
 		$logs = $query->get();
-
-		// Discard the first log, since it is just from the daily points module.
-		array_shift( $logs );
 
 		$this->assertCount( 6, $logs );
 
