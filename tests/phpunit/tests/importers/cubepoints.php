@@ -438,10 +438,12 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	 *
 	 * @covers WordPoints_CubePoints_Importer::import_points_settings
 	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
-	 *
-	 * @expectedDeprecated get_currentuserinfo
 	 */
 	public function test_import_periodic_points_respect_old_periods() {
+
+		if ( version_compare( $GLOBALS['wp_version'], '4.5', '>=' ) ) {
+			$this->setExpectedDeprecated( 'get_currentuserinfo' );
+		}
 
 		cp_module_activation_set( 'dailypoints', 'active' );
 
@@ -531,8 +533,6 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	 *
 	 * @covers WordPoints_CubePoints_Importer::import_points_settings
 	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
-	 *
-	 * @expectedDeprecated get_currentuserinfo
 	 */
 	public function test_import_periods_positive_gmt_offset() {
 
@@ -548,8 +548,6 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	 *
 	 * @covers WordPoints_CubePoints_Importer::import_points_settings
 	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
-	 *
-	 * @expectedDeprecated get_currentuserinfo
 	 */
 	public function test_import_periods_negative_gmt_offset() {
 
