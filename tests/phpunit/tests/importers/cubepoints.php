@@ -33,6 +33,12 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		parent::setUp();
 
+		// These are usually inactive by default. We activate them in the tests
+		// bootstrap so that they will be fully loaded, but deactivate them here to
+		// restore default behavior.
+		cp_module_activation_set( 'post_author_points', false );
+		cp_module_activation_set( 'dailypoints', false );
+
 		$this->importer = new WordPoints_CubePoints_Importer( 'Test CubePoints' );
 	}
 
@@ -385,7 +391,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	}
 
 	/**
-	 * Test importing the settings from the post author points module to points hooks.
+	 * Test importing the settings from the daily points module to points hooks.
 	 *
 	 * @since 1.1.0
 	 *
@@ -405,22 +411,151 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 			array(
 				'event' => 'user_visit',
 				'target' => array( 'current:user' ),
-				'reactor' => 'points',
+				'reactor' => 'points_legacy',
 				'points' => 30,
 				'points_type' => 'points',
 				'log_text' => 'Visiting the site.',
 				'description' => 'Visiting the site.',
-				'periods' => array(
-					'toggle_on' => array(
+				'points_legacy_periods' => array(
+					'fire' => array(
 						array(
 							'length' => DAY_IN_SECONDS,
 							'args' => array( array( 'current:user' ) ),
+							'relative' => true,
 						),
 					),
 				),
 				'points_legacy_reversals' => array(),
+				'legacy_log_type' => 'cubepoints-dailypoints',
 			)
 		);
+	}
+
+	/**
+	 * Test that the imported user visit hook respects CubePoints's started periods.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_points_settings
+	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
+	 *
+	 * @expectedDeprecated get_currentuserinfo
+	 */
+	public function test_import_periodic_points_respect_old_periods() {
+
+		cp_module_activation_set( 'dailypoints', 'active' );
+
+		update_option( 'cp_module_dailypoints_points', 30 );
+		update_option( 'cp_module_dailypoints_time', DAY_IN_SECONDS );
+
+		$user_id = $this->factory->user->create();
+
+		wp_set_current_user( $user_id );
+
+		$this->assertEquals( 100, cp_getPoints( $user_id ) );
+
+		cp_module_dailypoints_checkTimer();
+
+		$this->assertEquals( 130, cp_getPoints( $user_id ) );
+
+		// Running again shouldn't hit again.
+		cp_module_dailypoints_checkTimer();
+
+		$this->assertEquals( 130, cp_getPoints( $user_id ) );
+
+		$this->do_points_import( 'settings' );
+		$this->do_points_import( 'user_points' );
+		$this->do_points_import( 'logs' );
+
+		$this->assertEquals( 130, wordpoints_get_points( $user_id, 'points' ) );
+
+		wordpoints_hooks()->get_sub_app( 'router' )->{'wp,10'}();
+
+		$this->assertEquals( 130, wordpoints_get_points( $user_id, 'points' ) );
+
+		// Fast-forward and try again.
+		global $wpdb;
+
+		$id = $wpdb->get_var(
+			"
+				SELECT `id`
+				FROM `{$wpdb->wordpoints_points_logs}`
+				ORDER BY `id` DESC
+				LIMIT 1
+			"
+		);
+
+		// Don't go all the way yet.
+		$updated = $wpdb->update(
+			$wpdb->wordpoints_points_logs
+			, array( 'date' => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp', true ) - DAY_IN_SECONDS + HOUR_IN_SECONDS ) )
+			, array( 'id' => $id )
+			, array( '%s' )
+			, array( '%d' )
+		);
+
+		$this->assertEquals( 1, $updated );
+
+		// The periods cache will still hold the old date.
+		$this->flush_cache();
+
+		wordpoints_hooks()->get_sub_app( 'router' )->{'wp,10'}();
+
+		// Points should have been awarded again yet.
+		$this->assertEquals( 130, wordpoints_get_points( $user_id, 'points' ) );
+
+		// This time go all the way.
+		$updated = $wpdb->update(
+			$wpdb->wordpoints_points_logs
+			, array( 'date' => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp', true ) - DAY_IN_SECONDS - 1 ) )
+			, array( 'id' => $id )
+			, array( '%s' )
+			, array( '%d' )
+		);
+
+		$this->assertEquals( 1, $updated );
+
+		// The periods cache will still hold the old date.
+		$this->flush_cache();
+
+		wordpoints_hooks()->get_sub_app( 'router' )->{'wp,10'}();
+
+		// Points should have been awarded again.
+		$this->assertEquals( 160, wordpoints_get_points( $user_id, 'points' ) );
+	}
+
+	/**
+	 * Test the imported periods when the site has a positive GMT offset.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_points_settings
+	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
+	 *
+	 * @expectedDeprecated get_currentuserinfo
+	 */
+	public function test_import_periods_positive_gmt_offset() {
+
+		update_option( 'gmt_offset', 5 );
+
+		$this->test_import_periodic_points_respect_old_periods();
+	}
+
+	/**
+	 * Test the imported periods when the site has a negative GMT offset.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @covers WordPoints_CubePoints_Importer::import_points_settings
+	 * @covers WordPoints_CubePoints_Importer::import_daily_points_hook
+	 *
+	 * @expectedDeprecated get_currentuserinfo
+	 */
+	public function test_import_periods_negative_gmt_offset() {
+
+		update_option( 'gmt_offset', -5 );
+
+		$this->test_import_periodic_points_respect_old_periods();
 	}
 
 	/**
@@ -475,6 +610,9 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$query = new WordPoints_Points_Logs_Query( array( 'orderby' => 'id' ) );
 		$logs = $query->get();
 
+		// Discard the first log, since it is just from the daily points module.
+		array_pop( $logs );
+
 		$this->assertCount( 4, $logs );
 
 		$log = $logs[2];
@@ -512,6 +650,8 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	public function test_import_points_logs_reversals() {
 
 		remove_action( 'publish_post', 'cp_newPost' );
+		remove_action( 'cp_comment_add', 'cp_module_post_author_points_comment_add' );
+		remove_action( 'cp_comment_remove', 'cp_module_post_author_points_comment_remove' );
 
 		update_option( 'cp_comment_points', 10 );
 		update_option( 'cp_del_comment_points', 10 );
@@ -552,6 +692,9 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		);
 
 		$logs = $query->get();
+
+		// Discard the first log, since it is just from the daily points module.
+		array_shift( $logs );
 
 		$this->assertCount( 6, $logs );
 

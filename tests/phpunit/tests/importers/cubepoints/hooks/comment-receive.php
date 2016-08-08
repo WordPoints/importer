@@ -32,15 +32,7 @@ class WordPoints_CubePoints_Importer_Comment_Receive_Hook_Test
 	 */
 	public function test( $type ) {
 
-		if ( function_exists( 'cp_module_post_author_points_install' ) ) {
-			$this->markTestSkipped( 'You need to comment out lines the cp_module_post_author_points_install() function in the post author module to run these tests.' );
-		}
-
 		cp_module_activation_set( 'post_author_points', 'active' );
-
-		if ( ! function_exists( 'cp_module_post_author_points_config' ) ) {
-			require( WP_PLUGIN_DIR . '/cubepoints/modules/post_author_points.php' );
-		}
 
 		update_option( 'cp_post_points', 0 );
 

@@ -319,20 +319,22 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 			array(
 				'event' => 'user_visit',
 				'target' => array( 'current:user' ),
-				'reactor' => 'points',
+				'reactor' => 'points_legacy',
 				'points' => $points,
 				'points_type' => $settings['points_type'],
-				'periods' => array(
-					'toggle_on' => array(
+				'points_legacy_periods' => array(
+					'fire' => array(
 						array(
 							'length' => $period,
 							'args' => array( array( 'current:user' ) ),
+							'relative' => true,
 						),
 					),
 				),
 				'log_text' => __( 'Visiting the site.', 'wordpoints-importer' ),
 				'description' => __( 'Visiting the site.', 'wordpoints-importer' ),
 				'points_legacy_reversals' => array(),
+				'legacy_log_type' => 'cubepoints-dailypoints',
 			)
 		);
 	}
