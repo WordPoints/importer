@@ -4,7 +4,7 @@
  * Module Name: Importer
  * Author:      J.D. Grimes
  * Author URI:  http://codesymphony.co/
- * Version:     1.1.0
+ * Version:     1.2.0
  * License:     GPLv2+
  * Description: Import your data from CubePoints to WordPoints.
  * Text Domain: wordpoints-importer
@@ -30,7 +30,7 @@
  * ---------------------------------------------------------------------------------|
  *
  * @package WordPoints_Importer
- * @version 1.1.0
+ * @version 1.2.0
  * @author  J.D. Grimes <jdg@codesymphony.co>
  * @license GPLv2+
  */
