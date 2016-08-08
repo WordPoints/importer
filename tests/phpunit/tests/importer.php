@@ -250,8 +250,8 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 			array(
 				'points' => array(
 					'user_points' => '1',
-					'_data' => array( 'testing' => 1 )
-				)
+					'_data' => array( 'testing' => 1 ),
+				),
 			)
 			, new WordPoints_Importer_Tests_Feedback()
 		);
@@ -293,8 +293,8 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 			array(
 				'points' => array(
 					'user_points' => '1',
-					'_data' => array( 'testing' => 1 )
-				)
+					'_data' => array( 'testing' => 1 ),
+				),
 			)
 			, new WordPoints_Importer_Tests_Feedback()
 		);

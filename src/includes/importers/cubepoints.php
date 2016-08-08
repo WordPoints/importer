@@ -15,6 +15,55 @@
 class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 
 	/**
+	 * Reversible log types indexed by the reversing log type.
+	 *
+	 * This information is used to set the `auto_reversed` and `original_log_id`
+	 * points log metadata for the imported logs.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @see WordPoints_CubePoints_Importer::import_points_log()
+	 *
+	 * @var array
+	 */
+	protected $reversible_log_types = array(
+		'comment_remove'      => 'comment',
+		'post_comment_remove' => 'post_comment',
+	);
+
+	/**
+	 * Primary entity slugs for each imported log type.
+	 *
+	 * These are points log meta keys under which to save the entity ID in the
+	 * CubePoints `data` log field.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @see WordPoints_CubePoints_Importer::import_points_log()
+	 *
+	 * @var array
+	 */
+	protected $log_type_entities = array(
+		'comment'             => 'comment',
+		'comment_remove'      => 'comment',
+		'post'                => 'post',
+		'post_comment'        => 'comment',
+		'post_comment_remove' => 'comment',
+		'register'            => 'user',
+	);
+
+	/**
+	 * IDs of reversible logs, indexed by CubePoints log type and object ID.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @see WordPoints_CubePoints_Importer::import_points_log()
+	 *
+	 * @var int[][]
+	 */
+	protected $reversible_log_ids;
+
+	/**
 	 * @since 1.0.0
 	 */
 	public function __construct( $name ) {
@@ -114,12 +163,18 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 			}
 		}
 
-		$excluded_user_ids = wordpoints_get_array_option( 'wordpoints_excluded_users', 'network' );
+		$excluded_user_ids = wordpoints_get_maybe_network_array_option(
+			'wordpoints_excluded_users'
+		);
+
 		$excluded_user_ids = array_unique(
 			array_merge( $excluded_user_ids, $user_ids )
 		);
 
-		wordpoints_update_network_option( 'wordpoints_excluded_users', $excluded_user_ids );
+		wordpoints_update_maybe_network_option(
+			'wordpoints_excluded_users'
+			, $excluded_user_ids
+		);
 
 		$this->feedback->success(
 			sprintf(
@@ -141,10 +196,45 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 		$this->feedback->info( __( 'Importing points hooks&hellip;', 'wordpoints-importer' ) );
 
 		$options = array(
-			'cp_comment_points'     => 'comment',
-			'cp_post_points'        => 'post',
-			'cp_reg_points'         => 'registration',
-			'cp_post_author_points' => 'comment_received',
+			'cp_comment_points'     => array(
+				'event' => 'comment_leave\post',
+				'target' => array( 'comment\post', 'author', 'user' ),
+				/* translators: The post type name */
+				'log_text' => __( 'Comment on a %s.', 'wordpoints-importer' ),
+				/* translators: The post type name */
+				'description' => __( 'Commenting on a %s.', 'wordpoints-importer' ),
+				'legacy_log_type' => 'cubepoints-comment',
+				'legacy_meta_key' => 'comment',
+			),
+			'cp_post_points'        => array(
+				'event' => 'post_publish\post',
+				'target' => array( 'post\post', 'author', 'user' ),
+				/* translators: The post type name */
+				'log_text' => __( 'Published a Post.', 'wordpoints-importer' ),
+				/* translators: The post type name */
+				'description' => __( 'Publishing a Post.', 'wordpoints-importer' ),
+				'legacy_log_type' => 'cubepoints-post',
+				'legacy_meta_key' => 'post',
+				// CubePoints doesn't remove points when a post is deleted.
+				'blocker' => array( 'toggle_off' => true ),
+				'points_legacy_repeat_blocker' => array( 'toggle_on' => true ),
+			),
+			'cp_reg_points'         => array(
+				'event' => 'user_register',
+				'log_text' => __( 'Registration.', 'wordpoints-importer' ),
+				'description' => __( 'Registration.', 'wordpoints-importer' ),
+				'legacy_log_type' => 'cubepoints-register',
+			),
+			'cp_post_author_points' => array(
+				'event' => 'comment_leave\post',
+				'target' => array( 'comment\post', 'post\post', 'post\post', 'author', 'user' ),
+				/* translators: The post type name */
+				'log_text' => __( 'Received a comment on a %s.', 'wordpoints-importer' ),
+				/* translators: The post type name */
+				'description' => __( 'Receiving a comment on a %s.', 'wordpoints-importer' ),
+				'legacy_log_type' => 'cubepoints-post_author',
+				'legacy_meta_key' => 'comment',
+			),
 		);
 
 		// Don't import this module setting if the module isn't active.
@@ -154,20 +244,41 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 
 		$imported = 0;
 
-		foreach ( $options as $option => $type ) {
+		foreach ( $options as $option => $hook_settings ) {
 
 			$points = get_option( $option );
 
 			if ( wordpoints_posint( $points ) ) {
 
-				$added = $this->add_points_hook(
-					"wordpoints_{$type}_points_hook"
-					, $settings['points_type']
-					, array( 'points' => $points )
-				);
+				$hook_settings['points'] = $points;
+				$hook_settings['points_type'] = $settings['points_type'];
 
-				if ( $added ) {
-					$imported++;
+				if (
+					// The CubePoints post points were only awarded for Posts.
+					'post_publish\post' !== $hook_settings['event']
+					&& strpos( $hook_settings['event'], '\post' )
+				) {
+
+					$post_type_slugs = get_post_types( array( 'public' => true ) );
+
+					foreach ( $post_type_slugs as $post_type_slug ) {
+
+						$added = $this->add_points_hook(
+							$this->format_settings_for_post_type(
+								$post_type_slug
+								, $hook_settings
+							)
+						);
+
+						if ( $added ) {
+							$imported++;
+						}
+					}
+
+				} else {
+					if ( $this->add_points_hook( $hook_settings ) ) {
+						$imported++;
+					}
 				}
 			}
 		}
@@ -205,9 +316,26 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 		}
 
 		return $this->add_points_hook(
-			'wordpoints_periodic_points_hook'
-			, $settings['points_type']
-			, array( 'points' => $points, 'period' => $period )
+			array(
+				'event' => 'user_visit',
+				'target' => array( 'current:user' ),
+				'reactor' => 'points_legacy',
+				'points' => $points,
+				'points_type' => $settings['points_type'],
+				'points_legacy_periods' => array(
+					'fire' => array(
+						array(
+							'length' => $period,
+							'args' => array( array( 'current:user' ) ),
+							'relative' => true,
+						),
+					),
+				),
+				'log_text' => __( 'Visiting the site.', 'wordpoints-importer' ),
+				'description' => __( 'Visiting the site.', 'wordpoints-importer' ),
+				'points_legacy_reversals' => array(),
+				'legacy_log_type' => 'cubepoints-dailypoints',
+			)
 		);
 	}
 
@@ -215,30 +343,64 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	 * Programmatically create a new instance of a points hook.
 	 *
 	 * @since 1.0.0
+	 * @since 1.2.0 Now just accepts a single argument, $settings.
 	 *
-	 * @param string $hook_type   The type of hook to create.
-	 * @param string $points_type The slug of the points type the hook is for.
-	 * @param array  $instance    The arguments for the instance.
+	 * @param array $settings The settings for this hook.
 	 *
 	 * @return bool True if added successfully, or false on failure.
 	 */
-	private function add_points_hook( $hook_type, $points_type, $instance = array() ) {
+	private function add_points_hook( $settings = array() ) {
 
-		$hook = WordPoints_Points_Hooks::get_handler_by_id_base( $hook_type );
+		$reaction_store = wordpoints_hooks()->get_reaction_store( 'points' );
 
-		if ( ! $hook instanceof WordPoints_Points_Hook ) {
+		$settings = array_merge(
+			array(
+				'target' => array( 'user' ),
+				'reactor' => 'points_legacy',
+				'points_legacy_reversals' => array( 'toggle_off' => 'toggle_on' ),
+			)
+			, $settings
+		);
+
+		$reaction = $reaction_store->create_reaction( $settings );
+
+		if ( ! $reaction instanceof WordPoints_Hook_ReactionI ) {
 			return false;
 		}
 
-		$number = $hook->next_hook_id_number();
-
-		$points_types_hooks = WordPoints_Points_Hooks::get_points_types_hooks();
-		$points_types_hooks[ $points_type ] = $hook->get_id( $number );
-		WordPoints_Points_Hooks::save_points_types_hooks( $points_types_hooks );
-
-		$hook->update_callback( $instance, $number );
-
 		return true;
+	}
+
+	/**
+	 * Format the settings for a reaction for a particular post type.
+	 *
+	 * @since 1.2.0
+	 *
+	 * @param string $post_type The slug of the post type to format the settings for.
+	 * @param array  $settings  The reaction settings.
+	 *
+	 * @return array The settings modified for this particular post type.
+	 */
+	protected function format_settings_for_post_type( $post_type, $settings ) {
+
+		$settings['event'] = str_replace(
+			'\post'
+			, '\\' . $post_type
+			, $settings['event']
+		);
+
+		$settings['target'] = str_replace(
+			'\post'
+			, '\\' . $post_type
+			, $settings['target']
+		);
+
+		$labels = get_post_type_labels( get_post_type_object( $post_type ) );
+
+		$settings['log_text'] = sprintf( $settings['log_text'], $labels->singular_name );
+		$settings['description'] = sprintf( $settings['description'], $labels->singular_name );
+
+		return $settings;
 	}
 
 	/**
@@ -287,7 +449,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	 *
 	 * @param int $start The offset number to begin counting at.
 	 *
-	 * @return object[]
+	 * @return object[]|false The rows, or false.
 	 */
 	protected function get_next_user_points_batch( $start ) {
 
@@ -304,7 +466,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 				"
 				, $start
 			)
-		);
+		); // WPCS: cache OK.
 
 		if ( ! is_array( $rows ) ) {
 			return false;
@@ -344,8 +506,6 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 
 		$this->feedback->info( __( 'Importing points logs&hellip;', 'wordpoints-importer' ) );
 
-		add_filter( 'wordpoints_points_log-cubepoints', array( $this, 'render_points_log_text' ), 10, 6 );
-
 		$start = 0;
 
 		while ( $logs = $this->get_next_points_logs_batch( $start ) ) {
@@ -358,7 +518,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 					$log->uid
 					, $log->points
 					, $settings['points_type']
-					, 'cubepoints'
+					, "cubepoints-{$log->type}"
 					, array(
 						'cubepoints_type' => $log->type,
 						'cubepoints_data' => $log->data,
@@ -369,8 +529,6 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 
 			unset( $logs );
 		}
-
-		remove_filter( 'wordpoints_points_log-cubepoints', array( $this, 'render_points_log_text' ) );
 
 		$this->feedback->success( sprintf( __( 'Imported %s points log entries.', 'wordpoints-importer' ), $start ) );
 	}
@@ -398,7 +556,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 				'points'      => $points,
 				'points_type' => $points_type,
 				'log_type'    => $log_type,
-				'text'        => wordpoints_render_points_log_text( $user_id, $points, $points_type, $log_type, $meta ),
+				'text'        => $this->render_points_log_text( '', $user_id, $points, $points_type, $log_type, $meta ),
 				'date'        => $date,
 				'site_id'     => $wpdb->siteid,
 				'blog_id'     => $wpdb->blogid,
@@ -409,6 +567,36 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 		if ( false !== $result ) {
 
 			$log_id = (int) $wpdb->insert_id;
+
+			// Set auto_reversed and original_log_id metadata for reversed logs.
+			foreach ( $this->reversible_log_types as $reverse_type => $type ) {
+
+				if ( $meta['cubepoints_type'] === $type ) {
+
+					// Save this log ID for later, in case this log was reversed.
+					// cubepoints_data will contain the entity ID.
+					$this->reversible_log_ids[ $type ][ $meta['cubepoints_data'] ] = $log_id;
+
+				} elseif (
+					$meta['cubepoints_type'] === $reverse_type
+					&& isset( $this->reversible_log_ids[ $type ][ $meta['cubepoints_data'] ] )
+				) {
+
+					// This log was reverses another one. Set the original log ID.
+					$meta['original_log_id'] = $this->reversible_log_ids[ $type ][ $meta['cubepoints_data'] ];
+
+					// And mark the original as auto_reversed.
+					wordpoints_add_points_log_meta( $meta['original_log_id'], 'auto_reversed', $log_id );
+
+					// No need to keep this info anymore.
+					unset( $this->reversible_log_ids[ $type ][ $meta['cubepoints_data'] ] );
+				}
+			}
+
+			// Set the entity IDs to their own meta keys, for the sake of reversals.
+			if ( isset( $this->log_type_entities[ $meta['cubepoints_type'] ] ) ) {
+				$meta[ $this->log_type_entities[ $meta['cubepoints_type'] ] ] = $meta['cubepoints_data'];
+			}
 
 			foreach ( $meta as $meta_key => $meta_value ) {
 
@@ -423,8 +611,6 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	 * Generate the log text when importing a points log.
 	 *
 	 * @since 1.0.0
-	 *
-	 * @WordPress\filter wordpoints_points_log-cubepoints Added by self::import_points_logs().
 	 */
 	public function render_points_log_text( $text, $user_id, $points, $points_type, $log_type, $meta ) {
 
@@ -440,7 +626,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	 *
 	 * @param int $start The offset number to begin counting the 500 at.
 	 *
-	 * @return object[] The rows from the database.
+	 * @return object[]|false The rows from the database.
 	 */
 	protected function get_next_points_logs_batch( $start ) {
 
@@ -456,7 +642,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 				'
 				, $start
 			)
-		);
+		); // WPCS: cache OK.
 
 		if ( ! is_array( $logs ) ) {
 			$this->feedback->error( __( 'Unable to retrieve the logs from CubePoints&hellip;', 'wordpoints-importer' ) );

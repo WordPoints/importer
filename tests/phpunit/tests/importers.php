@@ -60,6 +60,8 @@ class WordPoints_Importers_Test extends WP_UnitTestCase {
 		foreach ( $importers as $slug => $args ) {
 			WordPoints_Importers::deregister( $slug );
 		}
+
+		parent::tearDown();
 	}
 
 	/**

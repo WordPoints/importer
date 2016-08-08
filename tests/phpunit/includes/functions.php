@@ -48,6 +48,14 @@ function wordpoints_importer_tests_manually_load_cubepoints() {
 	require( WP_PLUGIN_DIR . '/cubepoints/cubepoints.php' );
 
 	cp_activate();
+
+	// We activate these now so that they will be fully loaded. Otherwise only part
+	// of their functions will be loaded, as the rest are defined in a conditional.
+	// Because of some of the functions are defined outside of the conditional, there
+	// is no way for us to load the functions later without a fatal error from
+	// "already defined function".
+	cp_module_activation_set( 'dailypoints', 'active' );
+	cp_module_activation_set( 'post_author_points', 'active' );
 }
 
 // EOF
