@@ -1,8 +1,8 @@
 {
     "files": {
         "\/admin\/admin.php": {
-            "size": 5781,
-            "hash": "85f1a4a84fcf2ba2d913b14116b1dead",
+            "size": 6376,
+            "hash": "6c1bc2933465daacd55174385dff3273",
             "errors": false
         },
         "\/admin\/screens\/import.php": {
@@ -11,13 +11,13 @@
             "errors": false
         },
         "\/admin\/screens\/importing.php": {
-            "size": 600,
-            "hash": "6ba68fee77b5627599f92b40184b3c7c",
+            "size": 645,
+            "hash": "63ab4c1cbdc8e8dc3e3545480e44cca7",
             "errors": false
         },
         "\/importer.php": {
-            "size": 1890,
-            "hash": "9b528db9b071632b5199588beaa24d68",
+            "size": 1941,
+            "hash": "7c2441f10189a0bd63e17ae7d1efe681",
             "errors": false
         },
         "\/includes\/class-feedback.php": {
@@ -36,10 +36,10 @@
             "errors": false
         },
         "\/includes\/importers\/cubepoints.php": {
-            "size": 12853,
-            "hash": "20288fffc1673b4873a5b72cbf2e7ba9",
+            "size": 18500,
+            "hash": "d335d1ff0d963b1fb7573ceb3a153dd1",
             "errors": false
         }
     },
-    "config_signature": "db0a971a65aba71b12141d03e573dfbc"
+    "config_signature": "08b13f282a69e10c8d3d9bb8ed0391eb"
 }
