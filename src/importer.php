@@ -36,12 +36,6 @@
  */
 
 /**
- * The module's base class.
- *
- * @since 1.0.0
- */
-
-/**
  * The base feedback class.
  *
  * @since 1.0.0
