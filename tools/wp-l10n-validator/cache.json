@@ -17,7 +17,7 @@
         },
         "\/importer.php": {
             "size": 1941,
-            "hash": "7c2441f10189a0bd63e17ae7d1efe681",
+            "hash": "8596f3861c1349dd4833b750dbf7026c",
             "errors": false
         },
         "\/includes\/class-feedback.php": {
@@ -38,8 +38,8 @@
         "\/includes\/importers\/cubepoints.php": {
             "size": 18500,
             "hash": "d335d1ff0d963b1fb7573ceb3a153dd1",
-            "errors": false
+            "errors": true
         }
     },
-    "config_signature": "08b13f282a69e10c8d3d9bb8ed0391eb"
+    "config_signature": "b19e03d2add46d212bf472fbed5e7fb6"
 }

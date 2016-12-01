@@ -34,13 +34,6 @@
     },
     "\/includes\/importers\/cubepoints.php": {
         "comment": {
-            "30": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
             "47": {
                 "name": "array",
                 "type": "unknown",
@@ -108,13 +101,6 @@
                 "arg_count": 5,
                 "parentheses": 1
             },
-            "201": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 2,
-                "parentheses": 1
-            },
             "211": {
                 "name": "array",
                 "type": "unknown",
@@ -154,13 +140,6 @@
             }
         },
         "author": {
-            "201": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 1,
-                "parentheses": 1
-            },
             "211": {
                 "name": "array",
                 "type": "unknown",
@@ -220,13 +199,6 @@
             }
         },
         "current:user": {
-            "321": {
-                "name": "array",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            },
             "329": {
                 "name": "array",
                 "type": "unknown",
