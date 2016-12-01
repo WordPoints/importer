@@ -281,7 +281,8 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 					}
 				}
 			}
-		}
+
+		} // End foreach ( $options ).
 
 		if ( $this->import_daily_points_hook( $settings ) ) {
 			$imported++;
@@ -604,7 +605,8 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 			}
 
 			do_action( 'wordpoints_points_log', $user_id, $points, $points_type, $log_type, $meta, $log_id );
-		}
+
+		} // End if ( inserted successfully ).
 	}
 
 	/**
@@ -632,8 +634,8 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 
 		global $wpdb;
 
-		$logs = $wpdb->get_results(
-			$wpdb->prepare(
+		$logs = $wpdb->get_results( // WPCS: unprepared SQL OK.
+			$wpdb->prepare( // WPCS: unprepared SQL OK.
 				'
 					SELECT *
 					FROM `' . CP_DB . '`

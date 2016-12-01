@@ -490,7 +490,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		// Don't go all the way yet.
 		$updated = $wpdb->update(
 			$wpdb->wordpoints_points_logs
-			, array( 'date' => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp', true ) - DAY_IN_SECONDS + HOUR_IN_SECONDS ) )
+			, array( 'date' => date( 'Y-m-d H:i:s', current_time( 'timestamp', true ) - DAY_IN_SECONDS + HOUR_IN_SECONDS ) )
 			, array( 'id' => $id )
 			, array( '%s' )
 			, array( '%d' )
@@ -509,7 +509,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		// This time go all the way.
 		$updated = $wpdb->update(
 			$wpdb->wordpoints_points_logs
-			, array( 'date' => gmdate( 'Y-m-d H:i:s', current_time( 'timestamp', true ) - DAY_IN_SECONDS - 1 ) )
+			, array( 'date' => date( 'Y-m-d H:i:s', current_time( 'timestamp', true ) - DAY_IN_SECONDS - 1 ) )
 			, array( 'id' => $id )
 			, array( '%s' )
 			, array( '%d' )

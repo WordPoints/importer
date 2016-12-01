@@ -34,6 +34,13 @@
     },
     "\/includes\/importers\/cubepoints.php": {
         "comment": {
+            "30": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
             "47": {
                 "name": "array",
                 "type": "unknown",
@@ -101,6 +108,13 @@
                 "arg_count": 5,
                 "parentheses": 1
             },
+            "201": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 2,
+                "parentheses": 1
+            },
             "211": {
                 "name": "array",
                 "type": "unknown",
@@ -115,7 +129,7 @@
                 "arg_count": 4,
                 "parentheses": 1
             },
-            "358": {
+            "359": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -140,6 +154,13 @@
             }
         },
         "author": {
+            "201": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 1,
+                "parentheses": 1
+            },
             "211": {
                 "name": "array",
                 "type": "unknown",
@@ -199,7 +220,14 @@
             }
         },
         "current:user": {
-            "329": {
+            "322": {
+                "name": "array",
+                "type": "unknown",
+                "args_started": true,
+                "arg_count": 0,
+                "parentheses": 1
+            },
+            "330": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -208,7 +236,7 @@
             }
         },
         "cubepoints-dailypoints": {
-            "337": {
+            "338": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -216,17 +244,8 @@
                 "parentheses": 1
             }
         },
-        "points": {
-            "354": {
-                "name": "(unknown)->get_reaction_store",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            }
-        },
         "base": {
-            "681": {
+            "683": {
                 "name": "wordpoints_update_rank",
                 "type": "unknown",
                 "args_started": true,
@@ -235,7 +254,7 @@
             }
         },
         "points-": {
-            "692": false
+            "694": false
         }
     }
 }

@@ -3,7 +3,7 @@
 /**
  * Module Name: Importer
  * Author:      J.D. Grimes
- * Author URI:  http://codesymphony.co/
+ * Author URI:  https://codesymphony.co/
  * Version:     1.2.0
  * License:     GPLv2+
  * Description: Import your data from CubePoints to WordPoints.
