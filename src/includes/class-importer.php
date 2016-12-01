@@ -258,11 +258,31 @@ abstract class WordPoints_Importer {
 
 		$this->feedback->info( sprintf( __( 'Importing from %s&hellip;', 'wordpoints-importer' ), $this->name ) );
 
+		$this->no_interruptions();
+
 		foreach ( $args as $component => $options ) {
 			$this->do_import_for_component( $component, $options );
 		}
 
 		$this->feedback->info( __( 'Import complete.', 'wordpoints-importer' ) );
+	}
+
+	/**
+	 * Prevent any interruptions from occurring during the import.
+	 *
+	 * @since 1.2.1
+	 */
+	protected function no_interruptions() {
+
+		ignore_user_abort( true );
+
+		if (
+			// Back-compat with WordPoints 2.1.
+			function_exists( 'wordpoints_is_function_disabled' )
+			&& ! wordpoints_is_function_disabled( 'set_time_limit' )
+		) {
+			set_time_limit( 0 );
+		}
 	}
 
 	/**
