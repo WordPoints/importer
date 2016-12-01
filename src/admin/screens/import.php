@@ -69,7 +69,7 @@ $components = WordPoints_Components::instance()->get();
 
 		<p><?php esc_html_e( 'Select which items you would like imported.', 'wordpoints-importer' ); ?></p>
 
-		<form method="post" action="<?php echo esc_attr( self_admin_url( 'admin.php?page=wordpoints_importing' ) ); ?>">
+		<form method="post" action="<?php echo esc_url( self_admin_url( 'admin.php?page=wordpoints_importing' ) ); ?>">
 			<?php foreach ( $components as $slug => $component ) : ?>
 
 				<?php
