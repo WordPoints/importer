@@ -16,13 +16,26 @@
  */
 define( 'WORDPOINTS_IMPORTER_TESTS_DIR', dirname( dirname( __FILE__ ) ) );
 
-$loader = WordPoints_PHPUnit_Bootstrap_Loader::instance();
-$loader->add_plugin( 'cubepoints/cubepoints.php' );
-$loader->add_php_file(
-	WORDPOINTS_IMPORTER_TESTS_DIR . '/includes/activate-cubepoints-components.php'
-	, 'after'
-	, array( 'dailypoints', 'post_author_points' )
-);
+// Back-compat with WordPoints 2.1.
+if ( class_exists( 'WordPoints_PHPUnit_Bootstrap_Loader' ) ) {
+
+	$loader = WordPoints_PHPUnit_Bootstrap_Loader::instance();
+	$loader->add_plugin( 'cubepoints/cubepoints.php' );
+	$loader->add_php_file(
+		WORDPOINTS_IMPORTER_TESTS_DIR . '/includes/activate-cubepoints-components.php'
+		, 'after'
+		, array( 'dailypoints', 'post_author_points' )
+	);
+
+} elseif ( ! defined( 'WORDPOINTS_MODULE_TESTS_LOADER' ) ) {
+
+	/**
+	 * The function that loads the module for the tests.
+	 *
+	 * @since 1.0.0
+	 */
+	define( 'WORDPOINTS_MODULE_TESTS_LOADER', 'wordpoints_importer_tests_manually_load_module' );
+}
 
 /**
  * Manually load the module.

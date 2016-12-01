@@ -12,7 +12,7 @@
  *
  * @since 1.2.1
  */
-require( WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/admin/admin.php' );
+require_once( WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/admin/admin.php' );
 
 /**
  * Feedback object used in the tests.
