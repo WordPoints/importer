@@ -1,23 +1,23 @@
 {
     "files": {
         "\/admin\/admin.php": {
-            "size": 6376,
-            "hash": "6c1bc2933465daacd55174385dff3273",
+            "size": 6364,
+            "hash": "7f311c40129f1f2314c53f84bc45e3c9",
             "errors": false
         },
         "\/admin\/screens\/import.php": {
-            "size": 3963,
-            "hash": "f9131df60f9abac43b826a76be1fcb03",
+            "size": 3967,
+            "hash": "eb828e2f7f9a7b31f71c159658e759c6",
             "errors": false
         },
         "\/admin\/screens\/importing.php": {
-            "size": 645,
-            "hash": "63ab4c1cbdc8e8dc3e3545480e44cca7",
+            "size": 633,
+            "hash": "f0e7c113797b10508c245c61f05d8c60",
             "errors": false
         },
         "\/importer.php": {
-            "size": 1942,
-            "hash": "d8b4ac3abfc21cb560885973fe820546",
+            "size": 1886,
+            "hash": "b5a81383cacd671e3d4c9e6294b4b5ad",
             "errors": false
         },
         "\/includes\/class-feedback.php": {
@@ -26,8 +26,8 @@
             "errors": false
         },
         "\/includes\/class-importer.php": {
-            "size": 8604,
-            "hash": "665f3c9b5b2f230e68faa175ad10b9a3",
+            "size": 9001,
+            "hash": "a39ee8f7b3372b394a4877651824ee50",
             "errors": false
         },
         "\/includes\/functions.php": {
@@ -36,8 +36,8 @@
             "errors": false
         },
         "\/includes\/importers\/cubepoints.php": {
-            "size": 18624,
-            "hash": "067c5ef1fc2dff3c3f98b3e50c9e3606",
+            "size": 18636,
+            "hash": "5f4d01ba0f321e61be6659c0a69b2c52",
             "errors": false
         }
     },
