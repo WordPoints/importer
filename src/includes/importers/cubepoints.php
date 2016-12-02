@@ -77,7 +77,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 					'function' => array( $this, 'import_excluded_users' ),
 				),
 				'settings'    => array(
-					'label' => __( 'Points Hooks', 'wordpoints-importer' ),
+					'label' => __( 'Points Reactions', 'wordpoints-importer' ),
 					'description' => __( 'If checked, the settings for the number of points to award for posts, comments, etc. are imported.', 'wordpoints-importer' ),
 					'function' => array( $this, 'import_points_settings' ),
 				),
@@ -193,7 +193,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 	 */
 	protected function import_points_settings( $settings ) {
 
-		$this->feedback->info( __( 'Importing points hooks&hellip;', 'wordpoints-importer' ) );
+		$this->feedback->info( __( 'Importing points reactions&hellip;', 'wordpoints-importer' ) );
 
 		$options = array(
 			'cp_comment_points'     => array(
@@ -281,14 +281,15 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 					}
 				}
 			}
-		}
+
+		} // End foreach ( $options ).
 
 		if ( $this->import_daily_points_hook( $settings ) ) {
 			$imported++;
 		}
 
 		$this->feedback->success(
-			sprintf( __( 'Imported %s points hooks.', 'wordpoints-importer' ), $imported )
+			sprintf( __( 'Imported %s points reactions.', 'wordpoints-importer' ), $imported )
 		);
 	}
 
@@ -604,7 +605,8 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 			}
 
 			do_action( 'wordpoints_points_log', $user_id, $points, $points_type, $log_type, $meta, $log_id );
-		}
+
+		} // End if ( inserted successfully ).
 	}
 
 	/**
@@ -632,8 +634,8 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 
 		global $wpdb;
 
-		$logs = $wpdb->get_results(
-			$wpdb->prepare(
+		$logs = $wpdb->get_results( // WPCS: unprepared SQL OK.
+			$wpdb->prepare( // WPCS: unprepared SQL OK.
 				'
 					SELECT *
 					FROM `' . CP_DB . '`

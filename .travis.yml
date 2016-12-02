@@ -14,8 +14,11 @@ php:
 env:
     - TRAVISCI_RUN=codesniff
     - TRAVISCI_RUN=phpunit WP_VERSION=master WORDPOINTS_VERSION=master
-    - TRAVISCI_RUN=phpunit WP_VERSION=4.5 WORDPOINTS_VERSION=master
-    - TRAVISCI_RUN=phpunit WP_VERSION=4.4 WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=master WORDPOINTS_VERSION=stable
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.6 WORDPOINTS_VERSION=master
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.6 WORDPOINTS_VERSION=stable
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.5 WORDPOINTS_VERSION=stable
+    - TRAVISCI_RUN=phpunit WP_VERSION=4.4 WORDPOINTS_VERSION=stable
 
 sudo: false
 
@@ -54,6 +57,7 @@ script:
     - codesniff-php-syntax
     - codesniff-php-autoloaders
     - codesniff-phpcs
+    - codesniff-strings
     - codesniff-jshint
     - codesniff-l10n
     - codesniff-xmllint
@@ -68,6 +72,7 @@ script:
     - phpunit-ajax
     - phpunit-ms-ajax
     - phpunit-ms-network-ajax
+    - wpcept-run
 
 after_script:
     - source $DEV_LIB_PATH/travis/after_script.sh

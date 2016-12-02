@@ -96,7 +96,7 @@ function wordpoints_importer_do_import() {
 	}
 
 	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( esc_html__( 'You do not have sufficient permissions to import to WordPoints.', 'wordpoints-importer' ) );
+		wp_die( esc_html__( 'Sorry, you are not allowed to import to WordPoints.', 'wordpoints-importer' ) );
 	}
 
 	check_admin_referer( 'wordpoints_import' );

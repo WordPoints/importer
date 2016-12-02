@@ -7,15 +7,6 @@
  * @since 1.0.0
  */
 
-if ( ! defined( 'WORDPOINTS_MODULE_TESTS_LOADER' ) ) {
-	/**
-	 * The function that loads the module for the tests.
-	 *
-	 * @since 1.0.0
-	 */
-	define( 'WORDPOINTS_MODULE_TESTS_LOADER', 'wordpoints_importer_tests_manually_load_module' );
-}
-
 /**
  * The module's tests directory.
  *
@@ -25,10 +16,32 @@ if ( ! defined( 'WORDPOINTS_MODULE_TESTS_LOADER' ) ) {
  */
 define( 'WORDPOINTS_IMPORTER_TESTS_DIR', dirname( dirname( __FILE__ ) ) );
 
+// Back-compat with WordPoints 2.1.
+if ( class_exists( 'WordPoints_PHPUnit_Bootstrap_Loader' ) ) {
+
+	$loader = WordPoints_PHPUnit_Bootstrap_Loader::instance();
+	$loader->add_plugin( 'cubepoints/cubepoints.php' );
+	$loader->add_php_file(
+		WORDPOINTS_IMPORTER_TESTS_DIR . '/includes/activate-cubepoints-components.php'
+		, 'after'
+		, array( 'dailypoints', 'post_author_points' )
+	);
+
+} elseif ( ! defined( 'WORDPOINTS_MODULE_TESTS_LOADER' ) ) {
+
+	/**
+	 * The function that loads the module for the tests.
+	 *
+	 * @since 1.0.0
+	 */
+	define( 'WORDPOINTS_MODULE_TESTS_LOADER', 'wordpoints_importer_tests_manually_load_module' );
+}
+
 /**
  * Manually load the module.
  *
  * @since 1.0.0
+ * @deprecated 1.2.1
  */
 function wordpoints_importer_tests_manually_load_module() {
 
@@ -42,6 +55,7 @@ function wordpoints_importer_tests_manually_load_module() {
  * Manually load the CubePoints plugin.
  *
  * @since 1.0.0
+ * @deprecated 1.2.1
  */
 function wordpoints_importer_tests_manually_load_cubepoints() {
 
@@ -56,6 +70,14 @@ function wordpoints_importer_tests_manually_load_cubepoints() {
 	// "already defined function".
 	cp_module_activation_set( 'dailypoints', 'active' );
 	cp_module_activation_set( 'post_author_points', 'active' );
+
+	// We have to do this manually here after WordPress 4.7.
+	// https://core.trac.wordpress.org/ticket/38011#comment:3
+	global $wp_version;
+
+	if ( version_compare( $wp_version, '4.6', '>' ) ) {
+		cp_modules_include();
+	}
 }
 
 // EOF

@@ -129,7 +129,7 @@
                 "arg_count": 4,
                 "parentheses": 1
             },
-            "358": {
+            "359": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -220,14 +220,14 @@
             }
         },
         "current:user": {
-            "321": {
+            "322": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "329": {
+            "330": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -236,7 +236,7 @@
             }
         },
         "cubepoints-dailypoints": {
-            "337": {
+            "338": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -244,17 +244,8 @@
                 "parentheses": 1
             }
         },
-        "points": {
-            "354": {
-                "name": "(unknown)->get_reaction_store",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            }
-        },
         "base": {
-            "681": {
+            "683": {
                 "name": "wordpoints_update_rank",
                 "type": "unknown",
                 "args_started": true,
@@ -263,7 +254,7 @@
             }
         },
         "points-": {
-            "692": false
+            "694": false
         }
     }
 }
