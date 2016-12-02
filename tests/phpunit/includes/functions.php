@@ -70,6 +70,14 @@ function wordpoints_importer_tests_manually_load_cubepoints() {
 	// "already defined function".
 	cp_module_activation_set( 'dailypoints', 'active' );
 	cp_module_activation_set( 'post_author_points', 'active' );
+
+	// We have to do this manually here after WordPress 4.7.
+	// https://core.trac.wordpress.org/ticket/38011#comment:3
+	global $wp_version;
+
+	if ( version_compare( $wp_version, '4.6', '>' ) ) {
+		cp_modules_include();
+	}
 }
 
 // EOF
