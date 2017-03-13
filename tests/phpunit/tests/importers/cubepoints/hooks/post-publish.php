@@ -39,15 +39,15 @@ class WordPoints_CubePoints_Importer_Post_Publish_Hook_Test
 			array( 'post_author' => $user_id, 'post_status' => 'publish' )
 		);
 
-		$this->assertEquals( 10, $this->get_user_points( $user_id ) );
+		$this->assertSame( 10, $this->get_user_points( $user_id ) );
 
 		wp_update_post( array( 'ID' => $post_id, 'post_status' => 'draft' ) );
 
-		$this->assertEquals( 10, $this->get_user_points( $user_id ) );
+		$this->assertSame( 10, $this->get_user_points( $user_id ) );
 
 		wp_delete_post( $post_id, true );
 
-		$this->assertEquals( 10, $this->get_user_points( $user_id ) );
+		$this->assertSame( 10, $this->get_user_points( $user_id ) );
 	}
 }
 

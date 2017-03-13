@@ -178,6 +178,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 
 		$this->feedback->success(
 			sprintf(
+				// translators: Number of users.
 				__( 'Imported %s excluded users.', 'wordpoints-importer' )
 				, count( $user_ids )
 			)
@@ -289,6 +290,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 		}
 
 		$this->feedback->success(
+			// translators: Number of reactions.
 			sprintf( __( 'Imported %s points reactions.', 'wordpoints-importer' ), $imported )
 		);
 	}
@@ -440,6 +442,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 
 		remove_filter( 'wordpoints_points_log', '__return_false' );
 
+		// translators: Number of users.
 		$this->feedback->success( sprintf( __( 'Imported points for %s users&hellip;', 'wordpoints-importer' ), $start ) );
 	}
 
@@ -531,6 +534,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 			unset( $logs );
 		}
 
+		// translators: Number of points logs.
 		$this->feedback->success( sprintf( __( 'Imported %s points log entries.', 'wordpoints-importer' ), $start ) );
 	}
 
@@ -708,6 +712,7 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 			$i++;
 		}
 
+		// translators: Number of ranks.
 		$this->feedback->success( sprintf( __( 'Imported %s ranks.', 'wordpoints-importer' ), $i ) );
 	}
 }

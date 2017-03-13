@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
+class WordPoints_Importer_Admin_Test extends WordPoints_PHPUnit_TestCase_Points {
 
 	/**
 	 * Test that a points type must be supplied.
@@ -74,7 +74,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		);
 
 		$this->assertTrue( $valid );
-		$this->assertEmpty( $feedback->messages );
+		$this->assertSame( array(), $feedback->messages );
 	}
 
 	/**
@@ -95,7 +95,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		);
 
 		$this->assertFalse( $valid );
-		$this->assertEmpty( $feedback->messages );
+		$this->assertSame( array(), $feedback->messages );
 	}
 
 	/**
@@ -164,7 +164,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		);
 
 		$this->assertTrue( $valid );
-		$this->assertEmpty( $feedback->messages );
+		$this->assertSame( array(), $feedback->messages );
 	}
 
 	/**
@@ -187,7 +187,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		);
 
 		$this->assertFalse( $valid );
-		$this->assertEmpty( $feedback->messages );
+		$this->assertSame( array(), $feedback->messages );
 	}
 }
 

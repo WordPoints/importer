@@ -51,19 +51,19 @@ class WordPoints_CubePoints_Importer_Comment_Receive_Hook_Test
 			)
 		);
 
-		$this->assertEquals( 0, $this->get_user_points( $user_id ) );
+		$this->assertSame( 0, $this->get_user_points( $user_id ) );
 
 		wp_update_comment(
 			array( 'comment_ID' => $comment_id, 'comment_approved' => 1 )
 		);
 
-		$this->assertEquals( 10, $this->get_user_points( $user_id ) );
+		$this->assertSame( 10, $this->get_user_points( $user_id ) );
 
 		wp_update_comment(
 			array( 'comment_ID' => $comment_id, 'comment_approved' => 0 )
 		);
 
-		$this->assertEquals( 0, $this->get_user_points( $user_id ) );
+		$this->assertSame( 0, $this->get_user_points( $user_id ) );
 	}
 }
 

@@ -82,7 +82,7 @@ class WordPoints_Importers_Test extends WP_UnitTestCase {
 		$importers = WordPoints_Importers::get();
 
 		$this->assertArrayHasKey( 'test', $importers );
-		$this->assertEquals(
+		$this->assertSame(
 			array( 'class' => 'WordPoints_Importer_Mock', 'name' => 'Test' )
 			, $importers['test']
 		);

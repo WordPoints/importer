@@ -21,7 +21,7 @@
  * @coversNothing
  */
 abstract class WordPoints_Importer_Hook_UnitTestCase
-	extends WordPoints_Points_UnitTestCase {
+	extends WordPoints_PHPUnit_TestCase_Points {
 
 	/**
 	 * The option where CubePoints stores the number of points to award for this.
@@ -97,7 +97,7 @@ abstract class WordPoints_Importer_Hook_UnitTestCase
 	 */
 	protected function get_user_points( $user_id ) {
 		if ( 'cubepoints' === $this->type ) {
-			return cp_getPoints( $user_id );
+			return (int) cp_getPoints( $user_id );
 		} else {
 			return wordpoints_get_points( $user_id, 'points' );
 		}

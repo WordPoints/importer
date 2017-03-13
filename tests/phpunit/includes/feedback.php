@@ -21,7 +21,7 @@ class WordPoints_Importer_Tests_Feedback extends WordPoints_Importer_Feedback {
 	 *
 	 * @var string[][]
 	 */
-	public $messages;
+	public $messages = array();
 
 	/**
 	 * @since 1.0.0

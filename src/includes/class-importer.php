@@ -8,147 +8,6 @@
  */
 
 /**
- * Container class for the available importers.
- *
- * @since 1.0.0
- */
-final class WordPoints_Importers {
-
-	//
-	// Private Vars.
-	//
-
-	/**
-	 * The registered importers.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @type array $importers
-	 */
-	private static $importers = array();
-
-	/**
-	 * Whether the class has been initialized yet.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @type bool $initialized
-	 */
-	private static $initialized = false;
-
-	//
-	// Private Functions.
-	//
-
-	/**
-	 * Initialize the class.
-	 *
-	 * @since 1.0.0
-	 */
-	private static function init() {
-
-		// We do this first so we avoid infinite loops if this class is called by a
-		// function hooked to the below action.
-		self::$initialized = true;
-
-		/**
-		 * Register importers.
-		 *
-		 * @since 1.0.0
-		 */
-		do_action( 'wordpoints_register_importers' );
-	}
-
-	//
-	// Public Functions.
-	//
-
-	/**
-	 * Get all of the registered importers.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @return array All of the registered importers.
-	 */
-	public static function get() {
-
-		if ( ! self::$initialized ) {
-			self::init();
-		}
-
-		return self::$importers;
-	}
-
-	/**
-	 * Register an importer.
-	 *
-	 * If the importer is already registered, it will be overwritten.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $slug The unique identifier for this importer.
-	 * @param array  $args {
-	 *        Other importer arguments.
-	 *
-	 *        @type string $class The Importer class.
-	 *        @type string $name  The name of this importer.
-	 * }
-	 */
-	public static function register( $slug, array $args ) {
-		self::$importers[ $slug ] = $args;
-	}
-
-	/**
-	 * Deregister an importer.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $slug The slug of the importer to deregister.
-	 */
-	public static function deregister( $slug ) {
-		unset( self::$importers[ $slug ] );
-	}
-
-	/**
-	 * Check if an importer is registered.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $slug The slug of the importer.
-	 *
-	 * @return bool True if the importer is registered, otherwise false.
-	 */
-	public static function is_registered( $slug ) {
-
-		if ( ! self::$initialized ) {
-			self::init();
-		}
-
-		return isset( self::$importers[ $slug ] );
-	}
-
-	/**
-	 * Get an instance of an importer.
-	 *
-	 * @since 1.0.0
-	 *
-	 * @param string $slug The slug of the importer to get an instance of.
-	 *
-	 * @return WordPoints_Importer|false The importer, or false if it isn't registered.
-	 */
-	public static function get_importer( $slug ) {
-
-		if ( ! self::is_registered( $slug ) ) {
-			return false;
-		}
-
-		$importer = self::$importers[ $slug ];
-
-		return new $importer['class']( $importer['name'] );
-	}
-}
-
-/**
  * Represents an importer.
  *
  * @since 1.0.0
@@ -256,6 +115,7 @@ abstract class WordPoints_Importer {
 
 		$this->feedback = $feedback;
 
+		// translators: Plugin name.
 		$this->feedback->info( sprintf( __( 'Importing from %s&hellip;', 'wordpoints-importer' ), $this->name ) );
 
 		$this->no_interruptions();
@@ -324,11 +184,13 @@ abstract class WordPoints_Importer {
 		);
 
 		if ( false === $component_data ) {
+			// translators: Component name.
 			$this->feedback->warning( sprintf( __( 'Skipping %s component—not installed.', 'wordpoints-importer' ), esc_html( $component ) ) );
 			return;
 		}
 
 		if ( true !== $this->supports_component( $component ) ) {
+			// translators: Component name.
 			$this->feedback->warning( sprintf( __( 'Skipping the %s component—not supported.', 'wordpoints-importer' ), $component_data['name'] ) );
 			return;
 		}
@@ -344,6 +206,7 @@ abstract class WordPoints_Importer {
 			return;
 		}
 
+		// translators: Component name.
 		$this->feedback->info( sprintf( __( 'Importing data to the %s component&hellip;', 'wordpoints-importer' ), $component_data['name'] ) );
 
 		foreach ( $options as $option => $unused ) {
@@ -368,6 +231,7 @@ abstract class WordPoints_Importer {
 	protected function do_import_for_option( $option, $component, $settings ) {
 
 		if ( ! isset( $this->components[ $component ][ $option ] ) ) {
+			// translators: Option name.
 			$this->feedback->warning( sprintf( __( 'Skipping unrecognized import option &#8220;%s&#8221;&hellip;', 'wordpoints-importer' ), $option ) );
 			return;
 		}
@@ -380,6 +244,7 @@ abstract class WordPoints_Importer {
 			$cant_import = call_user_func( $option_data['can_import'], $settings );
 
 			if ( is_wp_error( $cant_import ) ) {
+				// translators: 1. Option name; 2. Reason the import was skipped.
 				$this->feedback->warning( sprintf( __( 'Skipping importing %1$s. Reason: %2$s', 'wordpoints-importer' ), $option_data['label'], $cant_import->get_error_message() ) );
 				return;
 			}

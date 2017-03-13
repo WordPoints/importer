@@ -11,6 +11,7 @@
  * Domain Path: /languages
  * Channel:     wordpoints.org
  * ID:          430
+ * Namespace:   Importer
  *
  * ---------------------------------------------------------------------------------|
  * Copyright 2014-16  J.D. Grimes  (email : jdg@codesymphony.co)
@@ -41,6 +42,13 @@
  * @since 1.0.0
  */
 require_once( dirname( __FILE__ ) . '/includes/class-feedback.php' );
+
+/**
+ * The importers class.
+ *
+ * @since 1.3.0
+ */
+require_once( dirname( __FILE__ ) . '/includes/class-importers.php' );
 
 /**
  * The base importer class.
