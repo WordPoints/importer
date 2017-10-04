@@ -8,6 +8,30 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a CH
 
 Nothing documented yet.
 
+## [1.3.0] - 2017-10-04
+
+### Requires
+
+- WordPoints: 2.4+
+
+### Added
+
+- This change log.
+
+### Changed
+
+- Minified CSS is now used.
+- Classes are now autoloaded.
+- `wordpoints_prevent_interruptions()` is now used instead of duplicating its code.
+
+### Removed
+
+- Backward-compatibility code for WordPoints 2.1.
+
+### Fixed
+
+- Deprecated notices from `Channel`, `Module Name`, and `Module URI` extension headers.
+
 ## [1.2.1] - 2016-12-02
 
 ### Fixed
@@ -43,6 +67,7 @@ Nothing documented yet.
 - Importer for points logs, user points, and excluded users from CubePoints.
 
 [unreleased]: https://github.com/WordPoints/importer/compare/master...HEAD
+[1.3.0]: https://github.com/WordPoints/importer/compare/1.2.1...1.3.0
 [1.2.1]: https://github.com/WordPoints/importer/compare/1.2.0...1.2.1
 [1.2.0]: https://github.com/WordPoints/importer/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/WordPoints/importer/compare/1.0.0...1.1.0
