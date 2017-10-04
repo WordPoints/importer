@@ -47,7 +47,7 @@ function wordpoints_import_admin_screen() {
 	 *
 	 * @since 1.0.0
 	 */
-	require( dirname( __FILE__ ) . '/screens/import.php' );
+	require dirname( __FILE__ ) . '/screens/import.php';
 }
 
 /**
@@ -62,7 +62,7 @@ function wordpoints_importing_admin_screen() {
 	 *
 	 * @since 1.0.0
 	 */
-	require( dirname( __FILE__ ) . '/screens/importing.php' );
+	require dirname( __FILE__ ) . '/screens/importing.php';
 }
 
 /**

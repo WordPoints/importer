@@ -421,11 +421,10 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 		add_filter( 'wordpoints_points_log', '__return_false' );
 
 		$start = 0;
+		$rows  = $this->get_next_user_points_batch( $start );
 
 		// We do the import in batches.
-		while ( $rows = $this->get_next_user_points_batch( $start ) ) {
-
-			$start += count( $rows );
+		while ( $rows ) {
 
 			foreach ( $rows as $row ) {
 
@@ -437,7 +436,8 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 				);
 			}
 
-			unset( $rows );
+			$start += count( $rows );
+			$rows   = $this->get_next_user_points_batch( $start );
 		}
 
 		remove_filter( 'wordpoints_points_log', '__return_false' );
@@ -511,10 +511,9 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 		$this->feedback->info( __( 'Importing points logs&hellip;', 'wordpoints-importer' ) );
 
 		$start = 0;
+		$logs  = $this->get_next_points_logs_batch( $start );
 
-		while ( $logs = $this->get_next_points_logs_batch( $start ) ) {
-
-			$start += count( $logs );
+		while ( $logs ) {
 
 			foreach ( $logs as $log ) {
 
@@ -531,7 +530,8 @@ class WordPoints_CubePoints_Importer extends WordPoints_Importer {
 				);
 			}
 
-			unset( $logs );
+			$start += count( $logs );
+			$logs   = $this->get_next_points_logs_batch( $start );
 		}
 
 		// translators: Number of points logs.

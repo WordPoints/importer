@@ -110,7 +110,7 @@ abstract class WordPoints_Importer {
 	public function do_import( array $args, $feedback = null ) {
 
 		if ( ! ( $feedback instanceof WordPoints_Importer_Feedback ) ) {
-			$feedback = new WordPoints_Importer_Feedback;
+			$feedback = new WordPoints_Importer_Feedback();
 		}
 
 		$this->feedback = $feedback;

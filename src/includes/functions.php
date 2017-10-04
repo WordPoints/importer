@@ -33,7 +33,7 @@ function wordpoints_importer_register_importers() {
 	 *
 	 * @since 1.0.0
 	 */
-	require_once( dirname( __FILE__ ) . '/importers/cubepoints.php' );
+	require_once dirname( __FILE__ ) . '/importers/cubepoints.php';
 
 	$args = array(
 		'class' => 'WordPoints_CubePoints_Importer',

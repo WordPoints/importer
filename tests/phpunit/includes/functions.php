@@ -45,8 +45,8 @@ if ( class_exists( 'WordPoints_PHPUnit_Bootstrap_Loader' ) ) {
  */
 function wordpoints_importer_tests_manually_load_module() {
 
-	require( WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/importer.php' );
-	require( WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/admin/admin.php' );
+	require WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/importer.php';
+	require WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/admin/admin.php';
 
 	wordpoints_importer_tests_manually_load_cubepoints();
 }
@@ -59,7 +59,7 @@ function wordpoints_importer_tests_manually_load_module() {
  */
 function wordpoints_importer_tests_manually_load_cubepoints() {
 
-	require( WP_PLUGIN_DIR . '/cubepoints/cubepoints.php' );
+	require WP_PLUGIN_DIR . '/cubepoints/cubepoints.php';
 
 	cp_activate();
 

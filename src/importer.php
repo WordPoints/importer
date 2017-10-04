@@ -41,28 +41,28 @@
  *
  * @since 1.0.0
  */
-require_once( dirname( __FILE__ ) . '/includes/class-feedback.php' );
+require_once dirname( __FILE__ ) . '/includes/class-feedback.php';
 
 /**
  * The importers class.
  *
  * @since 1.3.0
  */
-require_once( dirname( __FILE__ ) . '/includes/class-importers.php' );
+require_once dirname( __FILE__ ) . '/includes/class-importers.php';
 
 /**
  * The base importer class.
  *
  * @since 1.0.0
  */
-require_once( dirname( __FILE__ ) . '/includes/class-importer.php' );
+require_once dirname( __FILE__ ) . '/includes/class-importer.php';
 
 /**
  * The module's general functions.
  *
  * @since 1.0.0
  */
-require_once( dirname( __FILE__ ) . '/includes/functions.php' );
+require_once dirname( __FILE__ ) . '/includes/functions.php';
 
 if ( is_admin() ) {
 
@@ -71,7 +71,7 @@ if ( is_admin() ) {
 	 *
 	 * @since 1.0.0
 	 */
-	require_once( dirname( __FILE__ ) . '/admin/admin.php' );
+	require_once dirname( __FILE__ ) . '/admin/admin.php';
 }
 
 // EOF
