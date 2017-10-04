@@ -30,13 +30,6 @@ function wordpoints_importer_load_textdomain() {
  */
 function wordpoints_importer_register_importers() {
 
-	/**
-	 * The CubePoints importer.
-	 *
-	 * @since 1.0.0
-	 */
-	require_once dirname( __FILE__ ) . '/importers/cubepoints.php';
-
 	$args = array(
 		'class' => 'WordPoints_CubePoints_Importer',
 		'name'  => __( 'CubePoints', 'wordpoints-importer' ),

@@ -44,26 +44,7 @@ wordpoints_register_extension(
 	, __FILE__
 );
 
-/**
- * The base feedback class.
- *
- * @since 1.0.0
- */
-require_once dirname( __FILE__ ) . '/includes/class-feedback.php';
-
-/**
- * The importers class.
- *
- * @since 1.3.0
- */
-require_once dirname( __FILE__ ) . '/includes/class-importers.php';
-
-/**
- * The base importer class.
- *
- * @since 1.0.0
- */
-require_once dirname( __FILE__ ) . '/includes/class-importer.php';
+WordPoints_Class_Autoloader::register_dir( dirname( __FILE__ ) . '/includes' );
 
 /**
  * The module's general functions.
