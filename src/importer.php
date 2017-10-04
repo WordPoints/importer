@@ -1,17 +1,7 @@
 <?php
 
 /**
- * Module Name: Importer
- * Author:      J.D. Grimes
- * Author URI:  https://codesymphony.co/
- * Version:     1.2.1
- * License:     GPLv2+
- * Description: Import your data from CubePoints to WordPoints.
- * Text Domain: wordpoints-importer
- * Domain Path: /languages
- * Channel:     wordpoints.org
- * ID:          430
- * Namespace:   Importer
+ * Main file of the extension.
  *
  * ---------------------------------------------------------------------------------|
  * Copyright 2014-16  J.D. Grimes  (email : jdg@codesymphony.co)
@@ -35,6 +25,24 @@
  * @author  J.D. Grimes <jdg@codesymphony.co>
  * @license GPLv2+
  */
+
+wordpoints_register_extension(
+	'
+		Extension Name: Importer
+		Author:         J.D. Grimes
+		Author URI:     https://codesymphony.co/
+		Extension URI:  https://wordpoints.org/extensions/importer/
+		Version:        1.2.1
+		License:        GPLv2+
+		Description:    Import your data from CubePoints to WordPoints.
+		Text Domain:    wordpoints-importer
+		Domain Path:    /languages
+		Server:         wordpoints.org
+		ID:             430
+		Namespace:      Importer
+	'
+	, __FILE__
+);
 
 /**
  * The base feedback class.
