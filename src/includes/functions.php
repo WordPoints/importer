@@ -11,11 +11,11 @@
  * Load the module's text domain.
  *
  * @since 1.0.0
- * @deprecated 1.2.2 No longer needed.
+ * @deprecated 1.3.0 No longer needed.
  */
 function wordpoints_importer_load_textdomain() {
 
-	_deprecated_function( __FUNCTION__, '1.2.2' );
+	_deprecated_function( __FUNCTION__, '1.3.0' );
 
 	wordpoints_load_module_textdomain(
 		'wordpoints-importer'
