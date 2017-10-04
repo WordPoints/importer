@@ -15,7 +15,8 @@
  * @group importers
  * @group cubepoints
  */
-class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase {
+class WordPoints_CubePoints_Importer_Test
+	extends WordPoints_PHPUnit_TestCase_Points {
 
 	/**
 	 * The importer used in the tests.
@@ -114,7 +115,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 	 */
 	public function test_is_cubepoints_active() {
 
-		$this->assertEquals(
+		$this->assertSame(
 			function_exists( 'cp_ready' )
 			, $this->importer->is_cubepoints_active()
 		);
@@ -140,7 +141,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		$this->do_points_import( 'excluded_users' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			$user_ids
 			, wordpoints_get_excluded_users( 'tests' )
 		);
@@ -253,16 +254,19 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		$reaction_store = wordpoints_hooks()->get_reaction_store( 'points' );
 
-		$this->assertEmpty(
-			$reaction_store->get_reactions_to_event( 'post_publish\page' )
+		$this->assertSame(
+			array()
+			, $reaction_store->get_reactions_to_event( 'post_publish\page' )
 		);
 
-		$this->assertEmpty(
-			$reaction_store->get_reactions_to_event( 'post_publish\attachment' )
+		$this->assertSame(
+			array()
+			, $reaction_store->get_reactions_to_event( 'post_publish\attachment' )
 		);
 
-		$this->assertEmpty(
-			$reaction_store->get_reactions_to_event( 'media_upload' )
+		$this->assertSame(
+			array()
+			, $reaction_store->get_reactions_to_event( 'media_upload' )
 		);
 
 		$this->assertHookImported(
@@ -299,20 +303,20 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 			)
 		);
 
-		$this->assertEquals( 120, cp_getPoints( $user_id ) );
+		$this->assertSame( '120', cp_getPoints( $user_id ) );
 
 		$this->factory->post->update_object(
 			$post_id
 			, array( 'post_status' => 'draft' )
 		);
 
-		$this->assertEquals( 120, cp_getPoints( $user_id ) );
+		$this->assertSame( '120', cp_getPoints( $user_id ) );
 
 		$this->do_points_import( 'settings' );
 		$this->do_points_import( 'user_points' );
 		$this->do_points_import( 'logs' );
 
-		$this->assertEquals(
+		$this->assertSame(
 			120
 			, wordpoints_get_points( $user_id, 'points' )
 		);
@@ -322,7 +326,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 			, array( 'post_status' => 'publish' )
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			120
 			, wordpoints_get_points( $user_id, 'points' )
 		);
@@ -454,26 +458,26 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		wp_set_current_user( $user_id );
 
-		$this->assertEquals( 100, cp_getPoints( $user_id ) );
+		$this->assertSame( '100', cp_getPoints( $user_id ) );
 
 		cp_module_dailypoints_checkTimer();
 
-		$this->assertEquals( 130, cp_getPoints( $user_id ) );
+		$this->assertSame( '130', cp_getPoints( $user_id ) );
 
 		// Running again shouldn't hit again.
 		cp_module_dailypoints_checkTimer();
 
-		$this->assertEquals( 130, cp_getPoints( $user_id ) );
+		$this->assertSame( '130', cp_getPoints( $user_id ) );
 
 		$this->do_points_import( 'settings' );
 		$this->do_points_import( 'user_points' );
 		$this->do_points_import( 'logs' );
 
-		$this->assertEquals( 130, wordpoints_get_points( $user_id, 'points' ) );
+		$this->assertSame( 130, wordpoints_get_points( $user_id, 'points' ) );
 
 		wordpoints_hooks()->get_sub_app( 'router' )->{'wp,10'}();
 
-		$this->assertEquals( 130, wordpoints_get_points( $user_id, 'points' ) );
+		$this->assertSame( 130, wordpoints_get_points( $user_id, 'points' ) );
 
 		// Fast-forward and try again.
 		global $wpdb;
@@ -496,7 +500,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 			, array( '%d' )
 		);
 
-		$this->assertEquals( 1, $updated );
+		$this->assertSame( 1, $updated );
 
 		// The periods cache will still hold the old date.
 		$this->flush_cache();
@@ -504,7 +508,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		wordpoints_hooks()->get_sub_app( 'router' )->{'wp,10'}();
 
 		// Points should have been awarded again yet.
-		$this->assertEquals( 130, wordpoints_get_points( $user_id, 'points' ) );
+		$this->assertSame( 130, wordpoints_get_points( $user_id, 'points' ) );
 
 		// This time go all the way.
 		$updated = $wpdb->update(
@@ -515,7 +519,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 			, array( '%d' )
 		);
 
-		$this->assertEquals( 1, $updated );
+		$this->assertSame( 1, $updated );
 
 		// The periods cache will still hold the old date.
 		$this->flush_cache();
@@ -523,7 +527,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		wordpoints_hooks()->get_sub_app( 'router' )->{'wp,10'}();
 
 		// Points should have been awarded again.
-		$this->assertEquals( 160, wordpoints_get_points( $user_id, 'points' ) );
+		$this->assertSame( 160, wordpoints_get_points( $user_id, 'points' ) );
 	}
 
 	/**
@@ -578,7 +582,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$this->do_points_import( 'user_points' );
 
 		foreach ( $user_points as $user_id => $points ) {
-			$this->assertEquals( $points, wordpoints_get_points( $user_id, 'points' ) );
+			$this->assertSame( $points, wordpoints_get_points( $user_id, 'points' ) );
 		}
 	}
 
@@ -605,31 +609,31 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		$this->do_points_import( 'logs' );
 
-		$query = new WordPoints_Points_Logs_Query( array( 'orderby' => 'id' ) );
+		$query = new WordPoints_Points_Logs_Query( array( 'order_by' => 'id' ) );
 		$logs = $query->get();
 
 		$this->assertCount( 4, $logs );
 
 		$log = $logs[2];
 
-		$this->assertEquals( $user_id, $log->user_id );
-		$this->assertEquals( 10, $log->points );
-		$this->assertEquals( 'Testing things.', $log->text );
-		$this->assertEquals( 'cubepoints-misc', $log->log_type );
-		$this->assertEquals( 'points', $log->points_type );
-		$this->assertEquals( 'misc', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
-		$this->assertEquals( 'Testing things.', wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertSame( (string) $user_id, $log->user_id );
+		$this->assertSame( '10', $log->points );
+		$this->assertSame( 'Testing things.', $log->text );
+		$this->assertSame( 'cubepoints-misc', $log->log_type );
+		$this->assertSame( 'points', $log->points_type );
+		$this->assertSame( 'misc', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertSame( 'Testing things.', wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
 
 		$log = $logs[0];
 
-		$this->assertEquals( $user_id_2, $log->user_id );
-		$this->assertEquals( 25, $log->points );
+		$this->assertSame( (string) $user_id_2, $log->user_id );
+		$this->assertSame( '25', $log->points );
 		$this->assertStringMatchesFormat( 'Post on "<a href="%s">Post title %s</a>"', $log->text );
-		$this->assertEquals( 'cubepoints-post', $log->log_type );
-		$this->assertEquals( 'points', $log->points_type );
-		$this->assertEquals( 'post', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
-		$this->assertEquals( $post_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
-		$this->assertEquals( $post_id, wordpoints_get_points_log_meta( $log->id, 'post', true ) );
+		$this->assertSame( 'cubepoints-post', $log->log_type );
+		$this->assertSame( 'points', $log->points_type );
+		$this->assertSame( 'post', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertSame( (string) $post_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertSame( (string) $post_id, wordpoints_get_points_log_meta( $log->id, 'post', true ) );
 	}
 
 	/**
@@ -683,7 +687,7 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$this->do_points_import( 'logs' );
 
 		$query = new WordPoints_Points_Logs_Query(
-			array( 'orderby' => 'id', 'order' => 'ASC' )
+			array( 'order_by' => 'id', 'order' => 'ASC' )
 		);
 
 		$logs = $query->get();
@@ -693,48 +697,48 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		// The first log will be for when the first user was created, so we skip it.
 		$log = $logs[1];
 
-		$this->assertEquals( $user_id, $log->user_id );
-		$this->assertEquals( 10, $log->points );
-		$this->assertEquals( 'cubepoints-comment', $log->log_type );
-		$this->assertEquals( 'points', $log->points_type );
-		$this->assertEquals( 'comment', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
-		$this->assertEquals( $comment_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
-		$this->assertEquals( $comment_id, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
-		$this->assertEquals( $logs[4]->id, wordpoints_get_points_log_meta( $log->id, 'auto_reversed', true ) );
+		$this->assertSame( (string) $user_id, $log->user_id );
+		$this->assertSame( '10', $log->points );
+		$this->assertSame( 'cubepoints-comment', $log->log_type );
+		$this->assertSame( 'points', $log->points_type );
+		$this->assertSame( 'comment', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertSame( (string) $comment_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertSame( (string) $comment_id, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
+		$this->assertSame( $logs[4]->id, wordpoints_get_points_log_meta( $log->id, 'auto_reversed', true ) );
 
 		// The third log is for when the second user was created, so we skip it, too.
 		$log = $logs[3];
 
-		$this->assertEquals( $user_id_2, $log->user_id );
-		$this->assertEquals( 10, $log->points );
-		$this->assertEquals( 'cubepoints-comment', $log->log_type );
-		$this->assertEquals( 'points', $log->points_type );
-		$this->assertEquals( 'comment', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
-		$this->assertEquals( $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
-		$this->assertEquals( $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
-		$this->assertEquals( $logs[5]->id, wordpoints_get_points_log_meta( $log->id, 'auto_reversed', true ) );
+		$this->assertSame( (string) $user_id_2, $log->user_id );
+		$this->assertSame( '10', $log->points );
+		$this->assertSame( 'cubepoints-comment', $log->log_type );
+		$this->assertSame( 'points', $log->points_type );
+		$this->assertSame( 'comment', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertSame( (string) $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertSame( (string) $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
+		$this->assertSame( $logs[5]->id, wordpoints_get_points_log_meta( $log->id, 'auto_reversed', true ) );
 
 		$log = $logs[4];
 
-		$this->assertEquals( $user_id, $log->user_id );
-		$this->assertEquals( -10, $log->points );
-		$this->assertEquals( 'cubepoints-comment_remove', $log->log_type );
-		$this->assertEquals( 'points', $log->points_type );
-		$this->assertEquals( 'comment_remove', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
-		$this->assertEquals( $comment_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
-		$this->assertEquals( $comment_id, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
-		$this->assertEquals( $logs[1]->id, wordpoints_get_points_log_meta( $log->id, 'original_log_id', true ) );
+		$this->assertSame( (string) $user_id, $log->user_id );
+		$this->assertSame( '-10', $log->points );
+		$this->assertSame( 'cubepoints-comment_remove', $log->log_type );
+		$this->assertSame( 'points', $log->points_type );
+		$this->assertSame( 'comment_remove', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertSame( (string) $comment_id, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertSame( (string) $comment_id, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
+		$this->assertSame( $logs[1]->id, wordpoints_get_points_log_meta( $log->id, 'original_log_id', true ) );
 
 		$log = $logs[5];
 
-		$this->assertEquals( $user_id_2, $log->user_id );
-		$this->assertEquals( -10, $log->points );
-		$this->assertEquals( 'cubepoints-comment_remove', $log->log_type );
-		$this->assertEquals( 'points', $log->points_type );
-		$this->assertEquals( 'comment_remove', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
-		$this->assertEquals( $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
-		$this->assertEquals( $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
-		$this->assertEquals( $logs[3]->id, wordpoints_get_points_log_meta( $log->id, 'original_log_id', true ) );
+		$this->assertSame( (string) $user_id_2, $log->user_id );
+		$this->assertSame( '-10', $log->points );
+		$this->assertSame( 'cubepoints-comment_remove', $log->log_type );
+		$this->assertSame( 'points', $log->points_type );
+		$this->assertSame( 'comment_remove', wordpoints_get_points_log_meta( $log->id, 'cubepoints_type', true ) );
+		$this->assertSame( (string) $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'cubepoints_data', true ) );
+		$this->assertSame( (string) $comment_id_2, wordpoints_get_points_log_meta( $log->id, 'comment', true ) );
+		$this->assertSame( $logs[3]->id, wordpoints_get_points_log_meta( $log->id, 'original_log_id', true ) );
 	}
 
 	/**
@@ -771,16 +775,16 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 		$group = WordPoints_Rank_Groups::get_group( 'points_type-points' );
 
 		$base_rank = wordpoints_get_rank( $group->get_rank( 0 ) );
-		$this->assertEquals( 'base', $base_rank->type );
-		$this->assertEquals( 'Newbie', $base_rank->name );
+		$this->assertSame( 'base', $base_rank->type );
+		$this->assertSame( 'Newbie', $base_rank->name );
 
 		$second_rank = wordpoints_get_rank( $group->get_rank( 1 ) );
-		$this->assertEquals( 1000, $second_rank->points );
-		$this->assertEquals( 'Biggie', $second_rank->name );
+		$this->assertSame( '1000', $second_rank->points );
+		$this->assertSame( 'Biggie', $second_rank->name );
 
 		$third_rank = wordpoints_get_rank( $group->get_rank( 2 ) );
-		$this->assertEquals( 5000, $third_rank->points );
-		$this->assertEquals( 'Oldie', $third_rank->name );
+		$this->assertSame( '5000', $third_rank->points );
+		$this->assertSame( 'Oldie', $third_rank->name );
 	}
 
 	/**
@@ -860,12 +864,12 @@ class WordPoints_CubePoints_Importer_Test extends WordPoints_Points_UnitTestCase
 
 		foreach ( $reactions as $reaction ) {
 			if ( $settings === $reaction->get_all_meta() ) {
-				$this->assertEquals( $settings, $reaction->get_all_meta() );
+				$this->assertSame( $settings, $reaction->get_all_meta() );
 				return;
 			}
 		}
 
-		$this->assertEquals( $settings, $reaction->get_all_meta() );
+		$this->assertSameSetsWithIndex( $settings, $reaction->get_all_meta() );
 	}
 }
 

@@ -1,15 +1,4 @@
 {
-    "\/admin\/admin.php": {
-        "admin\/assets": {
-            "76": {
-                "name": "wordpoints_modules_url",
-                "type": "unknown",
-                "args_started": true,
-                "arg_count": 0,
-                "parentheses": 1
-            }
-        }
-    },
     "\/admin\/screens\/import.php": {
         "1": {
             "111": false
@@ -69,14 +58,14 @@
                 "arg_count": 4,
                 "parentheses": 1
             },
-            "207": {
+            "208": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 5,
                 "parentheses": 1
             },
-            "236": {
+            "237": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -92,7 +81,7 @@
                 "arg_count": 2,
                 "parentheses": 1
             },
-            "217": {
+            "218": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -108,28 +97,28 @@
                 "arg_count": 5,
                 "parentheses": 1
             },
-            "201": {
+            "202": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 2,
                 "parentheses": 1
             },
-            "211": {
+            "212": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 2,
                 "parentheses": 1
             },
-            "230": {
+            "231": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 4,
                 "parentheses": 1
             },
-            "359": {
+            "361": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -138,14 +127,14 @@
             }
         },
         "comment\\post": {
-            "201": {
+            "202": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "230": {
+            "231": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -154,21 +143,21 @@
             }
         },
         "author": {
-            "201": {
+            "202": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 1,
                 "parentheses": 1
             },
-            "211": {
+            "212": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 1,
                 "parentheses": 1
             },
-            "230": {
+            "231": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -177,7 +166,7 @@
             }
         },
         "cubepoints-comment": {
-            "206": {
+            "207": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -186,14 +175,14 @@
             }
         },
         "post\\post": {
-            "211": {
+            "212": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "230": {
+            "231": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -202,7 +191,7 @@
             }
         },
         "cubepoints-post": {
-            "216": {
+            "217": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -211,7 +200,7 @@
             }
         },
         "cubepoints-register": {
-            "226": {
+            "227": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -220,14 +209,14 @@
             }
         },
         "current:user": {
-            "322": {
+            "324": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
                 "arg_count": 0,
                 "parentheses": 1
             },
-            "330": {
+            "332": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -236,7 +225,7 @@
             }
         },
         "cubepoints-dailypoints": {
-            "338": {
+            "340": {
                 "name": "array",
                 "type": "unknown",
                 "args_started": true,
@@ -245,7 +234,7 @@
             }
         },
         "base": {
-            "683": {
+            "687": {
                 "name": "wordpoints_update_rank",
                 "type": "unknown",
                 "args_started": true,
@@ -254,7 +243,7 @@
             }
         },
         "points-": {
-            "694": false
+            "698": false
         }
     }
 }

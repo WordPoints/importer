@@ -1,14 +1,14 @@
-# Copyright (C) 2016 J.D. Grimes
+# Copyright (C) 2017 J.D. Grimes
 # This file is distributed under the same license as the WordPoints Importer package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WordPoints Importer 1.2.0\n"
+"Project-Id-Version: WordPoints Importer 1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-02 14:38:00+00:00\n"
+"POT-Creation-Date: 2017-10-04 20:01:05+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
@@ -16,7 +16,7 @@ msgstr ""
 msgid "WordPoints — Import"
 msgstr ""
 
-#: admin/admin.php:20 admin/screens/import.php:145
+#: admin/admin.php:20 admin/screens/import.php:153
 msgid "Import"
 msgstr ""
 
@@ -28,39 +28,39 @@ msgstr ""
 msgid "Importing"
 msgstr ""
 
-#: admin/admin.php:99
+#: admin/admin.php:101
 msgid "Sorry, you are not allowed to import to WordPoints."
 msgstr ""
 
-#: admin/admin.php:105
+#: admin/admin.php:107
 msgid "No importer selected."
 msgstr ""
 
-#: admin/admin.php:113
+#: admin/admin.php:115
 msgid "Importer not installed."
 msgstr ""
 
-#: admin/admin.php:145
+#: admin/admin.php:147
 msgid "Import to points type:"
 msgstr ""
 
-#: admin/admin.php:173
+#: admin/admin.php:175
 msgid "Skipping Points component—no points type specified."
 msgstr ""
 
-#: admin/admin.php:176
+#: admin/admin.php:178
 msgid "Skipping Points component—invalid points type selected."
 msgstr ""
 
-#: admin/admin.php:214
+#: admin/admin.php:216
 msgid "Import to rank group:"
 msgstr ""
 
-#: admin/admin.php:242
+#: admin/admin.php:244
 msgid "Skipping Ranks component—no rank group specified."
 msgstr ""
 
-#: admin/admin.php:245
+#: admin/admin.php:247
 msgid "Skipping Ranks component—invalid rank group selected."
 msgstr ""
 
@@ -85,11 +85,13 @@ msgstr ""
 msgid "Select which items you would like imported."
 msgstr ""
 
-#: admin/screens/import.php:115
+#. translators: Error message explaining the reason why the importer is
+#. disabled.
+#: admin/screens/import.php:120
 msgid "Disabled (%s)"
 msgstr ""
 
-#: admin/screens/import.php:137
+#: admin/screens/import.php:145
 msgid "This importer does not support any of the installed components."
 msgstr ""
 
@@ -97,35 +99,41 @@ msgstr ""
 msgid "Starting import (this could take a few moments)&hellip;"
 msgstr ""
 
-#: includes/class-importer.php:259
+#. translators: Plugin name.
+#: includes/class-importer.php:119
 msgid "Importing from %s&hellip;"
 msgstr ""
 
-#: includes/class-importer.php:267
+#: includes/class-importer.php:127
 msgid "Import complete."
 msgstr ""
 
-#: includes/class-importer.php:327
+#. translators: Component name.
+#: includes/class-importer.php:180
 msgid "Skipping %s component—not installed."
 msgstr ""
 
-#: includes/class-importer.php:332
+#. translators: Component name.
+#: includes/class-importer.php:186
 msgid "Skipping the %s component—not supported."
 msgstr ""
 
-#: includes/class-importer.php:347
+#. translators: Component name.
+#: includes/class-importer.php:202
 msgid "Importing data to the %s component&hellip;"
 msgstr ""
 
-#: includes/class-importer.php:371
+#. translators: Option name.
+#: includes/class-importer.php:227
 msgid "Skipping unrecognized import option &#8220;%s&#8221;&hellip;"
 msgstr ""
 
-#: includes/class-importer.php:383
+#. translators: 1. Option name; 2. Reason the import was skipped.
+#: includes/class-importer.php:240
 msgid "Skipping importing %1$s. Reason: %2$s"
 msgstr ""
 
-#: includes/functions.php:40
+#: includes/functions.php:35
 msgid "CubePoints"
 msgstr ""
 
@@ -173,104 +181,113 @@ msgstr ""
 msgid "No excluded users found."
 msgstr ""
 
-#: includes/importers/cubepoints.php:181
+#. translators: Number of users.
+#: includes/importers/cubepoints.php:182
 msgid "Imported %s excluded users."
 msgstr ""
 
-#: includes/importers/cubepoints.php:196
+#: includes/importers/cubepoints.php:197
 msgid "Importing points reactions&hellip;"
 msgstr ""
 
 #. translators: The post type name
-#: includes/importers/cubepoints.php:203
+#: includes/importers/cubepoints.php:204
 msgid "Comment on a %s."
 msgstr ""
 
 #. translators: The post type name
-#: includes/importers/cubepoints.php:205
+#: includes/importers/cubepoints.php:206
 msgid "Commenting on a %s."
 msgstr ""
 
 #. translators: The post type name
-#: includes/importers/cubepoints.php:213
+#: includes/importers/cubepoints.php:214
 msgid "Published a Post."
 msgstr ""
 
 #. translators: The post type name
-#: includes/importers/cubepoints.php:215
+#: includes/importers/cubepoints.php:216
 msgid "Publishing a Post."
 msgstr ""
 
-#: includes/importers/cubepoints.php:224 includes/importers/cubepoints.php:225
+#: includes/importers/cubepoints.php:225 includes/importers/cubepoints.php:226
 msgid "Registration."
 msgstr ""
 
 #. translators: The post type name
-#: includes/importers/cubepoints.php:232
+#: includes/importers/cubepoints.php:233
 msgid "Received a comment on a %s."
 msgstr ""
 
 #. translators: The post type name
-#: includes/importers/cubepoints.php:234
+#: includes/importers/cubepoints.php:235
 msgid "Receiving a comment on a %s."
 msgstr ""
 
-#: includes/importers/cubepoints.php:292
+#. translators: Number of reactions.
+#: includes/importers/cubepoints.php:294
 msgid "Imported %s points reactions."
 msgstr ""
 
-#: includes/importers/cubepoints.php:335 includes/importers/cubepoints.php:336
+#: includes/importers/cubepoints.php:337 includes/importers/cubepoints.php:338
 msgid "Visiting the site."
 msgstr ""
 
-#: includes/importers/cubepoints.php:416
+#: includes/importers/cubepoints.php:418
 msgid "Importing users&apos; points&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:443
+#. translators: Number of users.
+#: includes/importers/cubepoints.php:446
 msgid "Imported points for %s users&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:492
+#: includes/importers/cubepoints.php:495
 msgid "CubePoints must be active."
 msgstr ""
 
-#: includes/importers/cubepoints.php:508
+#: includes/importers/cubepoints.php:511
 msgid "Importing points logs&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:534
+#. translators: Number of points logs.
+#: includes/importers/cubepoints.php:538
 msgid "Imported %s points log entries."
 msgstr ""
 
-#: includes/importers/cubepoints.php:650
+#: includes/importers/cubepoints.php:654
 msgid "Unable to retrieve the logs from CubePoints&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:666
+#: includes/importers/cubepoints.php:670
 msgid "Importing ranks&hellip;"
 msgstr ""
 
-#: includes/importers/cubepoints.php:671
+#: includes/importers/cubepoints.php:675
 msgid "No ranks found."
 msgstr ""
 
-#: includes/importers/cubepoints.php:711
+#. translators: Number of ranks.
+#: includes/importers/cubepoints.php:716
 msgid "Imported %s ranks."
 msgstr ""
 
-#. Description of the module
+#. Description of the extension
 msgid "Import your data from CubePoints to WordPoints."
 msgstr ""
 
-#. Author of the module
+#. Author of the extension
 msgid "J.D. Grimes"
 msgstr ""
 
-#. Author URI of the module
+#. Author URI of the extension
 msgid "https://codesymphony.co/"
 msgstr ""
 
-#. Module Name of the module
+#. Extension Name of the extension
 msgid "Importer"
+msgstr ""
+
+#. Extension URI of the extension
+msgid "https://wordpoints.org/extensions/importer/"
 msgstr ""

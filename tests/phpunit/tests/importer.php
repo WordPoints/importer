@@ -14,7 +14,7 @@
  *
  * @group importers
  */
-class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
+class WordPoints_Importer_Importer_Test extends WordPoints_PHPUnit_TestCase {
 
 	/**
 	 * The mock importer used in the tests.
@@ -93,7 +93,7 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 	 */
 	public function test_get_options_for_component() {
 
-		$this->assertEquals(
+		$this->assertSame(
 			$this->importer_components['points']
 			, $this->importer->get_options_for_component( 'points' )
 		);
@@ -108,7 +108,7 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 	 */
 	public function test_get_options_for_unsupported_component() {
 
-		$this->assertEquals(
+		$this->assertSame(
 			array()
 			, $this->importer->get_options_for_component( 'unsupported' )
 		);
@@ -136,7 +136,7 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 		$this->assertCount( 1, $feedback->messages['warning'] );
 
 		// The import shouldn't have been performed.
-		$this->assertEmpty( $this->importer->imports );
+		$this->assertSame( array(), $this->importer->imports );
 	}
 
 	/**
@@ -159,7 +159,7 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 		$this->assertCount( 1, $feedback->messages['warning'] );
 
 		// The import shouldn't have been performed.
-		$this->assertEmpty( $this->importer->imports );
+		$this->assertSame( array(), $this->importer->imports );
 	}
 
 	/**
@@ -180,13 +180,13 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 			, new WordPoints_Importer_Tests_Feedback()
 		);
 
-		$this->assertEquals(
+		$this->assertSame(
 			1
 			, $this->filter_was_called( 'wordpoints_import_settings_valid-points' )
 		);
 
 		// The import shouldn't have been performed.
-		$this->assertEmpty( $this->importer->imports );
+		$this->assertSame( array(), $this->importer->imports );
 	}
 
 	/**
@@ -208,7 +208,7 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 		$this->assertCount( 1, $feedback->messages['warning'] );
 
 		// The import shouldn't have been performed.
-		$this->assertEmpty( $this->importer->imports );
+		$this->assertSame( array(), $this->importer->imports );
 	}
 
 	/**
@@ -234,7 +234,7 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 		$this->assertCount( 1, $feedback->messages['warning'] );
 
 		// The import shouldn't have been performed.
-		$this->assertEmpty( $this->importer->imports );
+		$this->assertSame( array(), $this->importer->imports );
 	}
 
 	/**
@@ -257,7 +257,7 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 		);
 
 		$this->assertCount( 1, $this->importer->can_imports );
-		$this->assertEquals(
+		$this->assertSame(
 			array( 'testing' => 1 )
 			, $this->importer->can_imports[0]
 		);
@@ -300,7 +300,7 @@ class WordPoints_Importer_Importer_Test extends WordPoints_UnitTestCase {
 		);
 
 		$this->assertCount( 1, $this->importer->imports );
-		$this->assertEquals(
+		$this->assertSame(
 			array( 'testing' => 1 )
 			, $this->importer->imports[0]
 		);

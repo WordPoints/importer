@@ -36,11 +36,11 @@ class WordPoints_CubePoints_Importer_User_Register_Hook_Test
 
 		$user_id = $this->factory->user->create();
 
-		$this->assertEquals( 10, $this->get_user_points( $user_id ) );
+		$this->assertSame( 10, $this->get_user_points( $user_id ) );
 
 		self::delete_user( $user_id );
 
-		$this->assertEquals( 0, $this->get_user_points( $user_id ) );
+		$this->assertSame( 0, $this->get_user_points( $user_id ) );
 	}
 }
 

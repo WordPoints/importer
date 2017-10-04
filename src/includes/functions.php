@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The module's general functions.
+ * The extension's general functions.
  *
  * @package WordPoints_Importer
  * @since 1.0.0
@@ -11,15 +11,17 @@
  * Load the module's text domain.
  *
  * @since 1.0.0
+ * @deprecated 1.3.0 No longer needed.
  */
 function wordpoints_importer_load_textdomain() {
 
+	_deprecated_function( __FUNCTION__, '1.3.0' );
+
 	wordpoints_load_module_textdomain(
-		'wordpointsorg'
+		'wordpoints-importer'
 		, wordpoints_module_basename( dirname( dirname( __FILE__ ) ) ) . '/languages'
 	);
 }
-add_action( 'wordpoints_modules_loaded', 'wordpoints_importer_load_textdomain' );
 
 /**
  * Register the included importers.
@@ -27,13 +29,6 @@ add_action( 'wordpoints_modules_loaded', 'wordpoints_importer_load_textdomain' )
  * @since 1.0.0
  */
 function wordpoints_importer_register_importers() {
-
-	/**
-	 * The CubePoints importer.
-	 *
-	 * @since 1.0.0
-	 */
-	require_once( dirname( __FILE__ ) . '/importers/cubepoints.php' );
 
 	$args = array(
 		'class' => 'WordPoints_CubePoints_Importer',

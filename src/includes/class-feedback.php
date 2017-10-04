@@ -84,7 +84,7 @@ class WordPoints_Importer_Feedback {
 	 * @param string $type    The type of message: 'info' (defuault), 'sucess',
 	 *                        'error', 'warning'.
 	 */
-	protected function _send( $message, $type = 'info' ) {
+	protected function _send( $message, $type = 'info' ) { // @codingStandardsIgnoreLine
 
 		?>
 

@@ -12,7 +12,7 @@
  *
  * @since 1.0.0
  */
-class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
+class WordPoints_Importer_Admin_Test extends WordPoints_PHPUnit_TestCase_Points {
 
 	/**
 	 * Test that a points type must be supplied.
@@ -23,7 +23,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 	 */
 	public function test_validate_points_type_setting_not_set() {
 
-		$feedback = new WordPoints_Importer_Tests_Feedback;
+		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$valid = wordpoints_importer_validate_points_type_setting(
 			true
@@ -44,7 +44,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 	 */
 	public function test_validate_points_type_setting_invalid() {
 
-		$feedback = new WordPoints_Importer_Tests_Feedback;
+		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$valid = wordpoints_importer_validate_points_type_setting(
 			true
@@ -65,7 +65,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 	 */
 	public function test_validate_points_type_setting_valid() {
 
-		$feedback = new WordPoints_Importer_Tests_Feedback;
+		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$valid = wordpoints_importer_validate_points_type_setting(
 			true
@@ -74,7 +74,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		);
 
 		$this->assertTrue( $valid );
-		$this->assertEmpty( $feedback->messages );
+		$this->assertSame( array(), $feedback->messages );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 	 */
 	public function test_validate_points_type_setting_valid_false() {
 
-		$feedback = new WordPoints_Importer_Tests_Feedback;
+		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$valid = wordpoints_importer_validate_points_type_setting(
 			false
@@ -95,7 +95,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		);
 
 		$this->assertFalse( $valid );
-		$this->assertEmpty( $feedback->messages );
+		$this->assertSame( array(), $feedback->messages );
 	}
 
 	/**
@@ -109,7 +109,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 
 		wordpoints_register_points_ranks();
 
-		$feedback = new WordPoints_Importer_Tests_Feedback;
+		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$valid = wordpoints_importer_validate_rank_group_setting(
 			true
@@ -132,7 +132,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 
 		wordpoints_register_points_ranks();
 
-		$feedback = new WordPoints_Importer_Tests_Feedback;
+		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$valid = wordpoints_importer_validate_rank_group_setting(
 			true
@@ -155,7 +155,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 
 		wordpoints_register_points_ranks();
 
-		$feedback = new WordPoints_Importer_Tests_Feedback;
+		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$valid = wordpoints_importer_validate_rank_group_setting(
 			true
@@ -164,7 +164,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		);
 
 		$this->assertTrue( $valid );
-		$this->assertEmpty( $feedback->messages );
+		$this->assertSame( array(), $feedback->messages );
 	}
 
 	/**
@@ -178,7 +178,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 
 		wordpoints_register_points_ranks();
 
-		$feedback = new WordPoints_Importer_Tests_Feedback;
+		$feedback = new WordPoints_Importer_Tests_Feedback();
 
 		$valid = wordpoints_importer_validate_rank_group_setting(
 			false
@@ -187,7 +187,7 @@ class WordPoints_Importer_Admin_Test extends WordPoints_Points_UnitTestCase {
 		);
 
 		$this->assertFalse( $valid );
-		$this->assertEmpty( $feedback->messages );
+		$this->assertSame( array(), $feedback->messages );
 	}
 }
 

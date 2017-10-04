@@ -26,7 +26,7 @@ class WordPoints_Importer_Mock extends WordPoints_Importer {
 	 *
 	 * @var array
 	 */
-	public $imports;
+	public $imports = array();
 
 	/**
 	 * The "imports" for that were checked for possible performance.

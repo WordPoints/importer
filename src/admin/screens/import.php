@@ -112,7 +112,15 @@ $components = WordPoints_Components::instance()->get();
 						<input type="checkbox" value="1" id="wordpoints_import[<?php echo esc_attr( $slug ); ?>][<?php echo esc_attr( $name ); ?>]" name="wordpoints_import[<?php echo esc_attr( $slug ); ?>][<?php echo esc_attr( $name ); ?>]" <?php disabled( is_wp_error( $can_import ), true ); ?> />
 						<?php echo esc_html( $option['label'] ); ?>
 						<?php if ( is_wp_error( $can_import ) ) : ?>
-							&nbsp;&nbsp;<em><?php printf( esc_html__( 'Disabled (%s)', 'wordpoints-importer' ), esc_html( $can_import->get_error_message() ) ); ?></em>
+							&nbsp;&nbsp;
+							<em>
+								<?php
+
+								// translators: Error message explaining the reason why the importer is disabled.
+								printf( esc_html__( 'Disabled (%s)', 'wordpoints-importer' ), esc_html( $can_import->get_error_message() ) );
+
+								?>
+							</em>
 						<?php endif; ?>
 					</label>
 

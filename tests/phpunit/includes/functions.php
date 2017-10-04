@@ -8,7 +8,7 @@
  */
 
 /**
- * The module's tests directory.
+ * The extension's tests directory.
  *
  * @since 1.0.0
  *
@@ -16,26 +16,13 @@
  */
 define( 'WORDPOINTS_IMPORTER_TESTS_DIR', dirname( dirname( __FILE__ ) ) );
 
-// Back-compat with WordPoints 2.1.
-if ( class_exists( 'WordPoints_PHPUnit_Bootstrap_Loader' ) ) {
-
-	$loader = WordPoints_PHPUnit_Bootstrap_Loader::instance();
-	$loader->add_plugin( 'cubepoints/cubepoints.php' );
-	$loader->add_php_file(
-		WORDPOINTS_IMPORTER_TESTS_DIR . '/includes/activate-cubepoints-components.php'
-		, 'after'
-		, array( 'dailypoints', 'post_author_points' )
-	);
-
-} elseif ( ! defined( 'WORDPOINTS_MODULE_TESTS_LOADER' ) ) {
-
-	/**
-	 * The function that loads the module for the tests.
-	 *
-	 * @since 1.0.0
-	 */
-	define( 'WORDPOINTS_MODULE_TESTS_LOADER', 'wordpoints_importer_tests_manually_load_module' );
-}
+$loader = WordPoints_PHPUnit_Bootstrap_Loader::instance();
+$loader->add_plugin( 'cubepoints/cubepoints.php' );
+$loader->add_php_file(
+	WORDPOINTS_IMPORTER_TESTS_DIR . '/includes/activate-cubepoints-components.php'
+	, 'after'
+	, array( 'dailypoints', 'post_author_points' )
+);
 
 /**
  * Manually load the module.
@@ -45,8 +32,8 @@ if ( class_exists( 'WordPoints_PHPUnit_Bootstrap_Loader' ) ) {
  */
 function wordpoints_importer_tests_manually_load_module() {
 
-	require( WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/importer.php' );
-	require( WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/admin/admin.php' );
+	require WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/importer.php';
+	require WORDPOINTS_IMPORTER_TESTS_DIR . '/../../src/admin/admin.php';
 
 	wordpoints_importer_tests_manually_load_cubepoints();
 }
@@ -59,7 +46,7 @@ function wordpoints_importer_tests_manually_load_module() {
  */
 function wordpoints_importer_tests_manually_load_cubepoints() {
 
-	require( WP_PLUGIN_DIR . '/cubepoints/cubepoints.php' );
+	require WP_PLUGIN_DIR . '/cubepoints/cubepoints.php';
 
 	cp_activate();
 

@@ -1,19 +1,10 @@
 <?php
 
 /**
- * Module Name: Importer
- * Author:      J.D. Grimes
- * Author URI:  https://codesymphony.co/
- * Version:     1.2.1
- * License:     GPLv2+
- * Description: Import your data from CubePoints to WordPoints.
- * Text Domain: wordpoints-importer
- * Domain Path: /languages
- * Channel:     wordpoints.org
- * ID:          430
+ * Main file of the extension.
  *
  * ---------------------------------------------------------------------------------|
- * Copyright 2014-16  J.D. Grimes  (email : jdg@codesymphony.co)
+ * Copyright 2014-17  J.D. Grimes  (email : jdg@codesymphony.co)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or later, as
@@ -30,40 +21,46 @@
  * ---------------------------------------------------------------------------------|
  *
  * @package WordPoints_Importer
- * @version 1.2.1
+ * @version 1.3.0
  * @author  J.D. Grimes <jdg@codesymphony.co>
  * @license GPLv2+
  */
 
-/**
- * The base feedback class.
- *
- * @since 1.0.0
- */
-require_once( dirname( __FILE__ ) . '/includes/class-feedback.php' );
+wordpoints_register_extension(
+	'
+		Extension Name: Importer
+		Author:         J.D. Grimes
+		Author URI:     https://codesymphony.co/
+		Extension URI:  https://wordpoints.org/extensions/importer/
+		Version:        1.3.0
+		License:        GPLv2+
+		Description:    Import your data from CubePoints to WordPoints.
+		Text Domain:    wordpoints-importer
+		Domain Path:    /languages
+		Server:         wordpoints.org
+		ID:             430
+		Namespace:      Importer
+	'
+	, __FILE__
+);
+
+WordPoints_Class_Autoloader::register_dir( dirname( __FILE__ ) . '/includes' );
 
 /**
- * The base importer class.
+ * The extension's general functions.
  *
  * @since 1.0.0
  */
-require_once( dirname( __FILE__ ) . '/includes/class-importer.php' );
-
-/**
- * The module's general functions.
- *
- * @since 1.0.0
- */
-require_once( dirname( __FILE__ ) . '/includes/functions.php' );
+require_once dirname( __FILE__ ) . '/includes/functions.php';
 
 if ( is_admin() ) {
 
 	/**
-	 * The module's admin-side code.
+	 * The extension's admin-side code.
 	 *
 	 * @since 1.0.0
 	 */
-	require_once( dirname( __FILE__ ) . '/admin/admin.php' );
+	require_once dirname( __FILE__ ) . '/admin/admin.php';
 }
 
 // EOF
