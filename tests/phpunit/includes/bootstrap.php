@@ -1,14 +1,14 @@
 <?php
 
 /**
- * PHPUnit tests bootstrap for the module.
+ * PHPUnit tests bootstrap for the extension.
  *
  * @package WordPoints_Importer\Tests
  * @since 1.0.0
  */
 
 /**
- * The module's admin-side code.
+ * The extension's admin-side code.
  *
  * @since 1.2.1
  */

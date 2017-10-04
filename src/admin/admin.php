@@ -8,7 +8,7 @@
  */
 
 /**
- * Register the module's administration panel and menu item.
+ * Register the extension's administration panel and menu item.
  *
  * @since 1.0.0
  */

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * The module's general functions.
+ * The extension's general functions.
  *
  * @package WordPoints_Importer
  * @since 1.0.0

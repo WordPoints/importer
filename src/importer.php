@@ -47,7 +47,7 @@ wordpoints_register_extension(
 WordPoints_Class_Autoloader::register_dir( dirname( __FILE__ ) . '/includes' );
 
 /**
- * The module's general functions.
+ * The extension's general functions.
  *
  * @since 1.0.0
  */
@@ -56,7 +56,7 @@ require_once dirname( __FILE__ ) . '/includes/functions.php';
 if ( is_admin() ) {
 
 	/**
-	 * The module's admin-side code.
+	 * The extension's admin-side code.
 	 *
 	 * @since 1.0.0
 	 */
