@@ -11,15 +11,17 @@
  * Load the module's text domain.
  *
  * @since 1.0.0
+ * @deprecated 1.2.2 No longer needed.
  */
 function wordpoints_importer_load_textdomain() {
 
+	_deprecated_function( __FUNCTION__, '1.2.2' );
+
 	wordpoints_load_module_textdomain(
-		'wordpointsorg'
+		'wordpoints-importer'
 		, wordpoints_module_basename( dirname( dirname( __FILE__ ) ) ) . '/languages'
 	);
 }
-add_action( 'wordpoints_modules_loaded', 'wordpoints_importer_load_textdomain' );
 
 /**
  * Register the included importers.
