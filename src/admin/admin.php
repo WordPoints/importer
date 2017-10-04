@@ -72,14 +72,16 @@ function wordpoints_importing_admin_screen() {
  */
 function wordpoints_importer_register_admin_scripts() {
 
-	$assets_url = wordpoints_modules_url(
+	$assets_url = wordpoints_extensions_url(
 		'admin/assets'
 		, dirname( dirname( __FILE__ ) ) . '/importer.php'
 	);
 
+	$suffix = SCRIPT_DEBUG ? '' : '.min';
+
 	wp_register_style(
 		'wordpoints-importer-feedback'
-		, $assets_url . '/css/feedback.css'
+		, "{$assets_url}/css/feedback{$suffix}.css"
 	);
 }
 add_action( 'init', 'wordpoints_importer_register_admin_scripts' );
